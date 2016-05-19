@@ -1,10 +1,17 @@
 CPP	      = g++
-#CXXFLAGS      = -O2 -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings
-CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a8 -mfpu=neon -fsingle-precision-constant -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings
-#LDFLAGS       = -lGL -lGLU -lILUT -ILU -lIL -lfmod
+ifeq ($(ODROID),1)
+CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=hard -fsingle-precision-constant -g -ffast-math -I./ -I/usr/include/GL -Wno-write-strings
 LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lSDL_mixer -lstdc++ -lm
-
+DEST          = /usr/local
+else ifeq ($(LINUX),1)
+CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings
+LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lSDL_mixer -lstdc++ -lm
+DEST          = /usr/local
+else
+CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fsingle-precision-constant -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings -DPANDORA
+LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lSDL_mixer -lstdc++ -lm
 DEST	      = .
+endif
 
 LD	      = gcc
 
@@ -22,10 +29,10 @@ PROGRAM       = prototype
 SHELL	      = /bin/bash
 
 %.o:		%.cpp
-		$(CPP) -O3 -ffast-math -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fsigned-char -fdiagnostics-color=auto -fsingle-precision-constant -g -I./ -I/usr/include/ -I/usr/include/GL -Wno-write-strings -DPANDORA $(CXXLAGS) -c $<
+		$(CPP) $(CXXLAGS) -c $<
 all:		$(PROGRAM)
 
 $(PROGRAM):     $(OBJS) $(LIBS)
 		@echo "Linking $(PROGRAM) ..."
-		$(LD) -o $(PROGRAM) $(OBJS) -lGL -lGLU  $(LDFLAGS) $(SDL_LDFLAGS)
+		$(LD) -o $(PROGRAM) $(OBJS) $(LDFLAGS) $(SDL_LDFLAGS)
 
