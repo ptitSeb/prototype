@@ -99,7 +99,7 @@ void Engine::PostCharge(float interp)
 	UTIL_SDL::Unlock_pBuffer(pMainTarget);
 	glEnable(GL_TEXTURE_2D);
 	UTIL_SDL::Lock_pBuffer(p64x64Target);
-#elif defined(PANDORA)
+#elif defined(PANDORA) || defined(ODROID)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnable(GL_TEXTURE_2D);
 	glBindFramebuffer(GL_FRAMEBUFFER, p64x64Target.fbo);
@@ -114,7 +114,7 @@ void Engine::PostCharge(float interp)
 	float px=UTIL_Misc::Interpolate(mPlayer.Pos.x,mPlayer.oPos.x,interp)-scr;
 	float py=UTIL_Misc::Interpolate(mPlayer.Pos.y,mPlayer.oPos.y,interp);
 	glTranslatef(-(px+64),-py,0);
-	#ifdef PANDORA
+	#if defined(PANDORA) || defined(ODROID)
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, pMainTarget.fb);
 	glColor4f(1,1,1,1);
@@ -141,7 +141,7 @@ void Engine::PostCharge(float interp)
 	UTIL_SDL::Unlock_pBuffer(p64x64Target);
 	BindMainContext();
 	UTIL_SDL::Bind_pBuffer(*p64x64Target);
-#elif defined(PANDORA)
+#elif defined(PANDORA) || defined(ODROID)
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	BindMainContext();
 	glEnable(GL_TEXTURE_2D);
@@ -226,7 +226,7 @@ void Engine::PostWater(float interp)
 	if(x2>640)x2=640;
 #ifdef SDL_VERSION_1_3
 	UTIL_SDL::Bind_pBuffer(*pMainTarget);
-#elif defined(PANDORA)
+#elif defined(PANDORA) || defined(ODROID)
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, pMainTarget.fb);
 #endif
