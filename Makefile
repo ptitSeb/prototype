@@ -29,7 +29,7 @@ PROGRAM       = prototype
 SHELL	      = /bin/bash
 
 %.o:		%.cpp
-		$(CPP) $(CXXLAGS) $(SDL_CFLAGS) -c $<
+		$(CPP) $(CXXFLAGS) $(SDL_CFLAGS) -c $<
 all:		$(PROGRAM)
 
 $(PROGRAM):     $(OBJS) $(LIBS)
