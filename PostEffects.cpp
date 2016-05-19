@@ -12,7 +12,7 @@ void Engine::BindMainContext()
 		return;
 	}
 	glEnable(GL_TEXTURE_2D);
-#ifdef PANDORA
+#if defined(PANDORA) || defined(ODROID)
 	glBindFramebuffer(GL_FRAMEBUFFER, pMainTarget.fbo);
 	glViewport(0,0,1024,512);
 #ifdef SDL_VERSION_1_3
@@ -33,7 +33,7 @@ void Engine::FinalizeMainContext()
 		return;
 
 	glEnable(GL_TEXTURE_2D);
-#ifdef PANDORA
+#if defined(PANDORA) || defined(ODROID)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(80, 0, 640, 480);
 #ifdef SDL_VERSION_1_3
@@ -50,7 +50,7 @@ void Engine::FinalizeMainContext()
 void Engine::RenderMainContext()
 {
 	glEnable(GL_TEXTURE_2D);
-#ifdef PANDORA
+#if defined(PANDORA) || defined(ODROID)
 	glBindTexture(GL_TEXTURE_2D, pMainTarget.fb);
 #else
 #ifdef SDL_VERSION_1_3

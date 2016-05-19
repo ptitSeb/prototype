@@ -1,5 +1,5 @@
 #pragma once
-#ifdef PANDORA
+#ifdef NO_FMOD
 #include <SDL/SDL_mixer.h>
 #else
 #include <fmod.h>
@@ -20,7 +20,7 @@ public:
 class Sample : public Sound
 {
 public:
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	Sample(){pSample = 0; pLoop = 1;}
 	#else
 	Sample(){pSample = 0;}
@@ -34,7 +34,7 @@ public:
 	void SetFrequency(int channel,int frequency);
 	void SetDefaults(int  deffreq, int defvol, int defpan, int defpri, int varfreq, int varvol, int varpan);
 private:
-#ifdef PANDORA
+#ifdef NO_FMOD
 	Mix_Chunk* pSample;
 	int	   pLoop;
 char* name;
@@ -45,7 +45,7 @@ char* name;
 class Stream : public Sound
 {
 public:
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	Stream(){pStream = 0; pLoop = 1;}
 	#else
 	Stream(){pStream = 0;}
@@ -58,7 +58,7 @@ public:
 	void Discard();
 	void Seek(int ms, int channel);
 private:
-#ifdef PANDORA
+#ifdef NO_FMOD
 	Mix_Music* pStream;
 	int	pLoop;
 #else

@@ -53,7 +53,7 @@
 #include "SpaceTrash.h"
 #include <list>
 
-#ifdef PANDORA
+#if defined(PANDORA) || defined(ODROID)
 extern "C" {
   GLAPI GLboolean APIENTRY glIsRenderbuffer (GLuint renderbuffer);
   GLAPI void APIENTRY glBindRenderbuffer (GLenum target, GLuint renderbuffer);
@@ -86,7 +86,7 @@ struct Key
 	char KeyName[32];
 };
 
-#ifdef PANDORA
+#if defined(PANDORA) || defined(ODROID)
 typedef struct
 {
 	GLuint fb;
@@ -219,7 +219,7 @@ private:
 
 	// render target related
 //		SDL_RenderTarget *pMainTarget,*pPostTarget, *p64x64Target, *p256x256Target;
-		#ifdef PANDORA
+		#if defined(PANDORA) || defined(ODROID)
 		tFBO pMainTarget, pPostTarget, p64x64Target, p256x256Target;	// Framebuffer
 		#endif
 

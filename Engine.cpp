@@ -45,7 +45,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	gSerializer.ReadVariable(enginepath,"Joystick",joystick);
 	FPS?bShowFps = true: bShowFps= false;
 	scanlines?bScanlines=true:bScanlines=false;
-	#ifdef PANDORA
+	#if defined(PANDORA) || defined(ODROID)
 	bRenderTargetSupport=true;
 	#else
 	renderTargets? bRenderTargetSupport=true:bRenderTargetSupport=false;
@@ -133,7 +133,7 @@ Engine::~Engine(void)
 {
 	gLog.OutPut("\n[Engine Shutdown]\n");
 	ilShutDown();
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	Mix_CloseAudio();
 	#else
 	FSOUND_Close();  
@@ -163,7 +163,7 @@ void Engine::InitDevil()
 //================================================================================================//
 void Engine::InitFmod()
 {
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	gLog.OutPut("\n[Initializing SDL_Mixer]\n");
 	SDL_InitSubSystem(SDL_INIT_AUDIO);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
@@ -678,7 +678,7 @@ void Engine::InitializeRenderTargets()
 {
 	if(!bRenderTargetSupport)
 		return;
-#ifdef PANDORA
+#if defined(PANDORA) || defined(ODROID)
 	#define CREATE_FB(name, width, height) 	\
 	glGenFramebuffers(1, &name.fbo);			\
 	glGenTextures(1, &name.fb);				\

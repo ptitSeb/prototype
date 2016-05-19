@@ -3,7 +3,7 @@
 void Sound::Volume(int channel,int vol)
 {
 //printf("Sample::Volume(%i, %i)\n", channel, vol);
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	Mix_Volume(channel, vol);
 	#else
 	FSOUND_SetVolume(channel,vol);
@@ -14,7 +14,7 @@ bool Sample::Load(char* sound, bool loop)
 //printf("Sample::Load(\"%s\", %i)\n", sound, loop);
 	if(loop)
 	{
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		pLoop=-1;
 		if((pSample = Mix_LoadWAV(sound))==0)
 		#else
@@ -27,7 +27,7 @@ bool Sample::Load(char* sound, bool loop)
 	}
 	else
 	{
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		pLoop=0;
 		if((pSample = Mix_LoadWAV(sound))==0)
 		#else
@@ -47,7 +47,7 @@ int Sample::Play()
 {
 //printf("Sample::Play() pSample=%p, name=%s\n", pSample, name);
 	if(pSample)
-		#ifdef PANDORA
+		#ifdef NO_FMOD
  		return(Mix_PlayChannel(-1, pSample, pLoop));
 		#else
 		return(FSOUND_PlaySound(FSOUND_FREE,pSample));
@@ -58,7 +58,7 @@ void Sample::Play(int channel)
 {
 //printf("Sample::Play(%i) pSample=%p, name=%s\n", channel, pSample, name);	
 	if(pSample)
-		#ifdef PANDORA
+		#ifdef NO_FMOD
  		Mix_PlayChannel(channel, pSample, pLoop);
 		#else
 		FSOUND_PlaySound(channel,pSample);
@@ -67,7 +67,7 @@ void Sample::Play(int channel)
 void Sample::Stop(int channel)
 {
 //printf("Sample::Stop(\"%s\", %i)\n", name, channel);
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	Mix_HaltChannel(channel);
 	#else
 	FSOUND_StopSound(channel);
@@ -77,7 +77,7 @@ void Sample::Discard()
 {
 //printf("Sample::Discard()\n");
 	if(pSample)
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		Mix_FreeChunk(pSample);
 		#else
 		FSOUND_Sample_Free(pSample);
@@ -87,7 +87,7 @@ void Sample::Discard()
 void Sample::SetFrequency(int channel,int frequency)
 {
 //printf("Sample::SetFrequency(%i, %i)\n", channel, frequency);
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	//TODO is this usefull?
 	#else
 	FSOUND_SetFrequency(channel,frequency);
@@ -96,7 +96,7 @@ void Sample::SetFrequency(int channel,int frequency)
 void Sample::SetDefaults(int  deffreq, int defvol, int defpan, int defpri, int varfreq, int varvol, int varpan)
 {
 //printf("Sample::SetDefaults(%i, %i, %i, %i, %i, %i, %i)\n", deffreq, defvol, defpan, defpri, varfreq, varvol, varpan);
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	//TODO is this usefull?
 	#else
 	FSOUND_Sample_SetDefaultsEx(pSample,deffreq,defvol,defpan,defpri,varfreq,varvol,varpan);
@@ -107,7 +107,7 @@ bool Stream::Load(char* stream, bool loop)
 //printf("Stream::Load(\"%s\", %i)\n", stream, loop);
 	if(loop)
 	{
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		pLoop=-1;
 		if((pStream = Mix_LoadMUS(stream))==0)
 		#else
@@ -120,7 +120,7 @@ bool Stream::Load(char* stream, bool loop)
 	}
 	else
 	{
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		pLoop=0;
 		if((pStream = Mix_LoadMUS(stream))==0)
 		#else
@@ -137,7 +137,7 @@ int Stream::Play()
 {
 //printf("Stream::Play()\n");
 	if(pStream)
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		Mix_PlayMusic(pStream, pLoop);
 		return(1);//TODO, better value?
 		#else
@@ -149,7 +149,7 @@ void Stream::Play(int channel)
 {
 //printf("Stream::Play(%i)\n", channel);
 	if(pStream)
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		Mix_PlayMusic(pStream, pLoop);
 		#else
 		FSOUND_Stream_Play(channel,pStream);
@@ -161,7 +161,7 @@ void Stream::Stop(int channel)
 {
 //printf("Stream::Stop(%i)\n", channel);
 	if(pStream)
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		Mix_HaltMusic();
 		#else
 		FSOUND_Stream_Stop(pStream);
@@ -171,7 +171,7 @@ void Stream::Discard()
 {
 //printf("Stream::Discard()\n");
 	if(pStream)
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		Mix_FreeMusic(pStream);
 		#else
 		FSOUND_Stream_Close(pStream);
@@ -183,7 +183,7 @@ void Stream::Seek(int ms, int channel)
 //printf("Stream::Seek(%i, %i)\n", ms, channel);
 	if(pStream)
 	{
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		Mix_PlayMusic(pStream, pLoop);
 		Mix_PauseMusic();
 		Mix_SetMusicPosition(ms/1000.0);

@@ -647,7 +647,7 @@ void Engine::StartCompleted()
 	SetStateTimed(&Engine::UpdateCongratulations,&Engine::RenderCongratulations,5,&Engine::FadeInEndCompleted);
 	mFade.StartFadeOut(mTimer.GetTime(),2,5.1f);
 	fUIDelay = mTimer.GetTime()+5;
-	#ifdef PANDORA
+	#ifdef NO_FMOD
 	stmStage.Stop(-1);
 	gpEngine->smpForceCharge.Stop(-1);
 	#else

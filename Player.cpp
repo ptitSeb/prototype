@@ -784,7 +784,7 @@ bool Player::CheckCollided(Sphere s, float damage)
 		SND_STOPFORCECHARGE;//make sure we arent charging
 		iForceCharge = 0;
 		bIsDead = true;
-		#ifdef PANDORA
+		#ifdef NO_FMOD
 		gpEngine->stmStage.Stop(-1);
 		#else
 		gpEngine->stmStage.Stop(FSOUND_ALL);
