@@ -618,7 +618,7 @@ void Engine::StartGameOver()
 #ifdef USE_C4A
 	//update C4A score
 	char buf[500];
-	sprintf(buf, "./fusilli --cache push prototype %i 0", mPlayer.iScore);
+	sprintf(buf, "fusilli --cache push prototype %i 0", mPlayer.iScore);
 	if (fGameC4A && mPlayer.iScore)
 		system(buf);
 #endif
