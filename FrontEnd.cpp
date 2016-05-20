@@ -32,8 +32,10 @@ void Engine::StartFrontEnd()
 	iOption = 0;
 	mbTimedState = false;
 	fGameOverFrame = 0;
+#ifdef USE_C4A
 	if (fGameDifficulty==3 && fGameC4A)
 		fGameDifficulty++;
+#endif
 	StartFadeIn();
 	SetState(&Engine::UpdateIntro,&Engine::RenderIntro);
 //	gLog.OutPut("StartFrontEnd END\n");
@@ -197,13 +199,21 @@ void Engine::UpdateSplash(float delta)
 		if(KEY_UI_LEFT.state == JUST_PRESSED || KEY_LEFT.state == JUST_PRESSED)
 		{
 			smpUImove.Play(1);
+#ifdef USE_C4A
 			fGameDifficulty<4? fGameDifficulty++: fGameDifficulty = 1;
+#else
+			fGameDifficulty<3? fGameDifficulty++: fGameDifficulty = 1;
+#endif
 			fUIDelay = mTimer.GetTime()+0.15f;
 		}
 		if(KEY_UI_RIGHT.state == JUST_PRESSED || KEY_RIGHT.state == JUST_PRESSED)
 		{
 			smpUImove.Play(1);
+#ifdef USE_C4A
 			fGameDifficulty>1? fGameDifficulty--: fGameDifficulty = 4;
+#else
+			fGameDifficulty>1? fGameDifficulty--: fGameDifficulty = 3;
+#endif
 			fUIDelay = mTimer.GetTime()+0.15f;
 		}
 	}
@@ -216,6 +226,7 @@ void Engine::UpdateSplash(float delta)
 		case 0://start game
 			stmSplash.Stop(30);
 			smpUIselect.Play(1);
+#ifdef USE_C4A
 			if (fGameDifficulty==4)
 			{
 				fGameDifficulty=3;
@@ -225,6 +236,7 @@ void Engine::UpdateSplash(float delta)
 			{
 				fGameC4A=false;
 			}
+#endif
 			SetState(&Engine::UpdateSplash2,&Engine::RenderSplash);
 			SetStateTimed(&Engine::UpdateGame,&Engine::RenderGame,2,&Engine::StartGame);
 			mFade.StartFadeOut(mTimer.GetTime(),0,2.15f);
@@ -355,8 +367,10 @@ void Engine::RenderSplash(const float interp)
 		mFont1.Print("START GAME <MEDIUM>",320,308);
 	if(fGameDifficulty==3)
 		mFont1.Print("START GAME <EASY>",320,308);
+#ifdef USE_C4A
 	if(fGameDifficulty==4)
 		mFont1.Print("START GAME <C4A>",320,308);
+#endif
 	iOption==1?
 		mFont1.SetColor(1,1,0,1):
 		mFont1.SetColor(1,1,1,1);
@@ -601,11 +615,13 @@ void Engine::StartGameOver()
 	fGameOverFrame = 0;
 	bGameOverFrame = false;
 	SetStateTimed(&Engine::UpdateGameOver,&Engine::RenderGameOver,10,&Engine::EndGameOver);
+#ifdef USE_C4A
 	//update C4A score
 	char buf[500];
 	sprintf(buf, "./fusilli --cache push prototype %i 0", mPlayer.iScore);
 	if (fGameC4A && mPlayer.iScore)
 		system(buf);
+#endif
 }
 void Engine::EndGameOver()
 {

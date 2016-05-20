@@ -100,8 +100,9 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	mFont1.SetScale(0.5f,1.0f);
 	mFont1.Print("LOADING...",550,430);
 	SDL_GL_SwapBuffers();
-
+#ifdef USE_C4A
 	fGameDifficulty = 4;//easy - C4A
+#endif
 	float delayStartup = mTimer.GetTime()+2;
 	while(mTimer.GetTime()<delayStartup)
 	{
@@ -467,12 +468,13 @@ void Engine::KeyStateAlltered(int key,bool state)
 				bWimpMode = false;
 				bHyperMode = false;
 				bBossFight = false;
+#ifdef USE_C4A
 				//C4A Updatee if any
 				char buf[500];
-				sprintf(buf, "./fusilli --cache push prototype %i 0", mPlayer.iScore);
+				sprintf(buf, "fusilli --cache push prototype %i 0", mPlayer.iScore);
 				if (fGameC4A && mPlayer.iScore)
 					system(buf);
-
+#endif
 				StartFrontEnd();
 				SetState(&Engine::UpdateSplash,&Engine::RenderSplash);
 				SetStateTimed(&Engine::UpdateSplash,&Engine::RenderSplash,0);

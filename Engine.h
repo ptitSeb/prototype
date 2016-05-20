@@ -279,7 +279,9 @@ public:
 		float fMapSpeed;
 
 		float fGameDifficulty;
+#ifdef USE_C4A
 		bool fGameC4A;
+#endif
 	// map related
 		int iStage;
 		float Scroll, oScroll;
