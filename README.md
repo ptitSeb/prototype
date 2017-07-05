@@ -1,10 +1,13 @@
 # prototype
 ===========
 
-This is ProtoType, an RType remake from Dark Castle Software.
-This version compile on Linux, has the FMOD dependancie removed, and has a few fixes in the code.
+![prototype build status](https://api.travis-ci.org/ptitSeb/prototype.png "prototype build status")
 
-On Pandora and ODROID, it use glshim.
+This is ProtoType, an RType remake from Dark Castle Software.
+This version compile on OpenPAndora, Linux and ODROID, has the FMOD dependancy removed (using SDL_mixer instead), and has a few fixes in the code.
+You will need libdevil (image library), on debian and friends, it's `sudo apt install libdevil-dev`
+
+On Pandora and ODROID, it use [gl4es](http://github.com/ptitSeb/gl4es).
 
 To compile on Pandora, type
 'make'

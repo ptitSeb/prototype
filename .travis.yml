@@ -1,0 +1,12 @@
+language: cpp
+sudo: true
+dist: trusty
+
+compiler:
+    - g++
+
+#Build steps
+before_install:
+    - sudo apt-get install libsdl-mixer1.2-dev libdevil-dev libglu-dev -y
+
+script: make LINUX=1
