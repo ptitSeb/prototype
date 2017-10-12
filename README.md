@@ -12,13 +12,13 @@ You will need libdevil (image library), on debian and friends, it's `sudo apt in
 On Pandora and ODROID, it use [gl4es](http://github.com/ptitSeb/gl4es).
 
 To compile on Pandora, type
-'make'
+`make`
 
 To compile on ODROID, type
-'make ODROID=1'
+`make ODROID=1`
 
 To compile on Linux x86, type
-'make LINUX=1'
+`make LINUX=1`
 
 For more info, the website of the original game is here: http://xout.blackened-interactive.com/ProtoType/Prototype.html
 
