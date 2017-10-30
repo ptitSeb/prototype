@@ -12,13 +12,8 @@ void Engine::BindMainContext()
 		return;
 	}
 	glEnable(GL_TEXTURE_2D);
-#if defined(PANDORA) || defined(ODROID)
 	glBindFramebuffer(GL_FRAMEBUFFER, pMainTarget.fbo);
 	glViewport(0,0,1024,512);
-#ifdef SDL_VERSION_1_3
-	UTIL_SDL::Lock_pBuffer(pMainTarget);
-#endif
-#endif
 	UTIL_GL::GL2D::SetOrtho(1024,512);
 
 }
@@ -27,19 +22,16 @@ void Engine::BindMainContext()
 							** Finalize the frame **	
 							************************/
 //================================================================================================//
+
 void Engine::FinalizeMainContext()
 {
 	if(!bRenderTargetSupport)
 		return;
 
 	glEnable(GL_TEXTURE_2D);
-#if defined(PANDORA) || defined(ODROID)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(80, 0, 640, 480);
-#ifdef SDL_VERSION_1_3
-	UTIL_SDL::Unlock_pBuffer(pMainTarget);
-#endif
-#endif
+	glViewport(vpStartX, vpStartY, vpWidth, vpHeight);
+
 	RenderMainContext();
 }
 //================================================================================================//
@@ -50,13 +42,8 @@ void Engine::FinalizeMainContext()
 void Engine::RenderMainContext()
 {
 	glEnable(GL_TEXTURE_2D);
-#if defined(PANDORA) || defined(ODROID)
 	glBindTexture(GL_TEXTURE_2D, pMainTarget.fb);
-#else
-#ifdef SDL_VERSION_1_3
-	UTIL_SDL::Bind_pBuffer(*pMainTarget);
-#endif
-#endif
+
 	UTIL_GL::GL2D::SetOrtho(640,480);
 	glColor4f(1,1,1,1);
 	glDisable(GL_BLEND);
@@ -95,18 +82,11 @@ void Engine::PostCharge(float interp)
 	if(!bRenderTargetSupport)
 		return;
 
-#ifdef SDL_VERSION_1_3
-	UTIL_SDL::Unlock_pBuffer(pMainTarget);
-	glEnable(GL_TEXTURE_2D);
-	UTIL_SDL::Lock_pBuffer(p64x64Target);
-#elif defined(PANDORA) || defined(ODROID)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnable(GL_TEXTURE_2D);
 	glBindFramebuffer(GL_FRAMEBUFFER, p64x64Target.fbo);
 	glViewport(0,0,64,64);
-#else
-	glViewport(0,0,64,64);
-#endif
+
 	glClearColor(0,0,0,0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	UTIL_GL::GL2D::SetOrtho(64,64);
@@ -137,16 +117,11 @@ void Engine::PostCharge(float interp)
 
 	px+=64;
 	glEnable(GL_TEXTURE_2D);
-#ifdef SDL_VERSION_1_3
-	UTIL_SDL::Unlock_pBuffer(p64x64Target);
-	BindMainContext();
-	UTIL_SDL::Bind_pBuffer(*p64x64Target);
-#elif defined(PANDORA) || defined(ODROID)
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	BindMainContext();
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, p64x64Target.fb);
-#endif
+
 	glDisable(GL_BLEND);
 	float hpx = (1.0f/64.0f)*0.5f;
 	float hpy = (1.0f/64.0f)*0.5f;
@@ -224,12 +199,9 @@ void Engine::PostWater(float interp)
 	if(x1<0)x1=0;
 	x2=(x2-x1)+32;
 	if(x2>640)x2=640;
-#ifdef SDL_VERSION_1_3
-	UTIL_SDL::Bind_pBuffer(*pMainTarget);
-#elif defined(PANDORA) || defined(ODROID)
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, pMainTarget.fb);
-#endif
+
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1,1.0f,1,1);
 

@@ -5,10 +5,34 @@
 						** Engine constructor **	
 						************************/
 //================================================================================================//
+
+// global variable about the ViewPort, default value for Pandora (800x480), other platform will adjust that
+int vpStartX = 80;
+int vpStartY = 0;
+int vpWidth = 640;
+int vpHeight = 480;
+
+glBindRenderbuffer_func glBindRenderbuffer = NULL;
+glDeleteRenderbuffers_func glDeleteRenderbuffers = NULL;
+glGenRenderbuffers_func glGenRenderbuffers = NULL;
+glRenderbufferStorage_func glRenderbufferStorage = NULL;
+glGetRenderbufferParameteriv_func glGetRenderbufferParameteriv = NULL;
+glIsFramebuffer_func glIsFramebuffer = NULL;
+glBindFramebuffer_func glBindFramebuffer = NULL;
+glDeleteFramebuffers_func glDeleteFramebuffers = NULL;
+glGenFramebuffers_func glGenFramebuffers = NULL;
+glCheckFramebufferStatus_func glCheckFramebufferStatus = NULL;
+glFramebufferTexture2D_func glFramebufferTexture2D = NULL;
+glFramebufferRenderbuffer_func glFramebufferRenderbuffer = NULL;
+glGetFramebufferAttachmentParameteriv_func glGetFramebufferAttachmentParameteriv = NULL;
+glGenerateMipmap_func glGenerateMipmap = NULL;
+
+
 Engine *gpEngine;
 Engine::Engine(int width, int height, bool fscreen, char* winName)
 {
 	gpEngine = this;
+	pRecordEnt = NULL;
 	//registering profiler funcs
 	PROFILE_REG_SLICE("ENGINE_Pump");
 	PROFILE_REG_SLICE("ENGINE_Update");
@@ -19,7 +43,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	winWidth = width;
 	winHeight = height;
 	int vsync=0, bpp=32, log=1, joystick=1;
-	#ifdef PANDORA
+	#if defined(PANDORA) || defined(ODROID)
 	int fullscreen=1;
 	#else
 	int fullscreen = fscreen?1:0;
@@ -27,15 +51,16 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	int renderTargets=0;
 	int FPS=0;
 	int scanlines = 0;
-
 	char enginepath[PATH_MAX];
 	snprintf(enginepath, PATH_MAX, "%s/.prototype/Engine.cfg", getenv("HOME"));
 
 	gSerializer.PutComment(enginepath,"[Display Properties]");
-/*	gSerializer.ReadVariable(enginepath,"winWidth",winWidth);
+#ifndef PANDORA
+	gSerializer.ReadVariable(enginepath,"winWidth",winWidth);
 	gSerializer.ReadVariable(enginepath,"winHeight",winHeight);
 	gSerializer.ReadVariable(enginepath,"bpp",bpp);
-*/	gSerializer.ReadVariable(enginepath,"Vsync",vsync);
+#endif
+	gSerializer.ReadVariable(enginepath,"Vsync",vsync);
 	gSerializer.ReadVariable(enginepath,"PBuffers",renderTargets);
 	gSerializer.ReadVariable(enginepath,"ShowFPS",FPS);
 	gSerializer.ReadVariable(enginepath,"Fullscreen",fullscreen);
@@ -45,14 +70,13 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	gSerializer.ReadVariable(enginepath,"Joystick",joystick);
 	FPS?bShowFps = true: bShowFps= false;
 	scanlines?bScanlines=true:bScanlines=false;
-	#if defined(PANDORA) || defined(ODROID)
+	#if defined(PANDORA)
 	bRenderTargetSupport=true;
 	#else
 	renderTargets? bRenderTargetSupport=true:bRenderTargetSupport=false;
 	#endif
 	gLog.SetLogState(log);
 	fscreen = fullscreen?true:false;
-
 	//init
 	#ifdef PANDORA
 	if(!UTIL_SDL::InitSDL(winName,800,480,bpp,vsync?true:false,fscreen))
@@ -60,6 +84,27 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	if(!UTIL_SDL::InitSDL(winName,winWidth,winHeight,bpp,vsync?true:false,fscreen))
 	#endif
 		return;
+#ifndef PANDORA
+	// adjust ViewPort stuff...
+	float ratioX = (float)winWidth/640.0f;
+	float ratioY = (float)winHeight/480.0f;
+	if(ratioY<ratioX) {
+		vpHeight = winHeight;
+		vpWidth = 640*ratioY;
+		vpStartX = (winWidth - vpWidth)/2;
+		vpStartY = 0;
+	} else if(ratioX==ratioY) {
+		vpWidth = winWidth;
+		vpHeight = winHeight;
+		vpStartX = 0;
+		vpStartY = 0;
+	} else {
+		vpWidth = winWidth;
+		vpHeight = 480*ratioX;
+		vpStartX = 0;
+		vpStartY = (winHeight - vpHeight)/2;
+	}
+#endif
 	InitializeRenderTargets();
 
 	//init joystick support
@@ -89,10 +134,9 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 
 	//Display Loading message
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	#ifdef PANDORA
-	glViewport(80,0,640,480);
-	#endif
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	glViewport(vpStartX,vpStartY,vpWidth,vpHeight);
+	//UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(640.f,480.f);
 	glColor4f(1,1,1,1);
 	mFont1.SetColor(0,1,1,1);
 	mFont1.SetAlignment(ALIGN_LEFT);
@@ -102,6 +146,8 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	SDL_GL_SwapBuffers();
 #ifdef USE_C4A
 	fGameDifficulty = 4;//easy - C4A
+#else
+	fGameDifficulty = 3;//easy
 #endif
 	float delayStartup = mTimer.GetTime()+2;
 	while(mTimer.GetTime()<delayStartup)
@@ -680,7 +726,23 @@ void Engine::InitializeRenderTargets()
 {
 	if(!bRenderTargetSupport)
 		return;
-#if defined(PANDORA) || defined(ODROID)
+	#define GO(A) A = (A##_func) SDL_GL_GetProcAddress(#A); if(A==NULL) {bRenderTargetSupport=false; return;}
+	GO(glBindRenderbuffer);
+	GO(glDeleteRenderbuffers);
+	GO(glGenRenderbuffers);
+	GO(glRenderbufferStorage);
+	GO(glGetRenderbufferParameteriv);
+	GO(glIsFramebuffer);
+	GO(glBindFramebuffer);
+	GO(glDeleteFramebuffers);
+	GO(glGenFramebuffers);
+	GO(glCheckFramebufferStatus);
+	GO(glFramebufferTexture2D);
+	GO(glFramebufferRenderbuffer);
+	GO(glGetFramebufferAttachmentParameteriv);
+	GO(glGenerateMipmap);
+	#undef GO
+
 	#define CREATE_FB(name, width, height) 	\
 	glGenFramebuffers(1, &name.fbo);			\
 	glGenTextures(1, &name.fb);				\
@@ -709,42 +771,6 @@ void Engine::InitializeRenderTargets()
     CREATE_FB(p256x256Target, 256, 256);
 
     #undef CREATE_FB
-
-#else
-#ifdef SDL_VERSION_1_3
-	if(!(pMainTarget = UTIL_SDL::Create_pBuffer(1024,512)))
-	{
-		gLog.OutPut("Render Targets Not supported.\n");
-		bRenderTargetSupport = false;
-		return;
-	}
-	UTIL_SDL::Unlock_pBuffer(pMainTarget);
-	if(!(pPostTarget = UTIL_SDL::Create_pBuffer(1024,512)))
-	{
-		gLog.OutPut("Render Targets Not supported.\n");
-		bRenderTargetSupport = false;
-		return;
-	}
-	UTIL_SDL::Unlock_pBuffer(pPostTarget);
-	if(!(p64x64Target = UTIL_SDL::Create_pBuffer(64,64)))
-	{
-		gLog.OutPut("Render Targets Not supported.\n");
-		bRenderTargetSupport = false;
-		return;
-	}
-	UTIL_SDL::Unlock_pBuffer(p64x64Target);
-	if(!(p256x256Target = UTIL_SDL::Create_pBuffer(256,256)))
-	{
-		gLog.OutPut("Render Targets Not supported.\n");
-		bRenderTargetSupport = false;
-		return;
-	}
-	UTIL_SDL::Unlock_pBuffer(p256x256Target);
-
-	gLog.OutPut("Render Targets supported.\n");
-	bRenderTargetSupport = true;
-#endif
-#endif
 }
 //================================================================================================//
 						/*****************************************

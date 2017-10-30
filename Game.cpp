@@ -18,7 +18,7 @@ void Engine::StartGame()
 	iStage = 1;
 	//display loading message
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 	glColor4f(1,1,1,1);
 	mFont1.SetColor(0,1,1,1);
 	mFont1.SetAlignment(ALIGN_LEFT);

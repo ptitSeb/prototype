@@ -53,30 +53,36 @@
 #include "SpaceTrash.h"
 #include <list>
 
-#if defined(PANDORA) || defined(ODROID)
 extern "C" {
-  GLAPI GLboolean APIENTRY glIsRenderbuffer (GLuint renderbuffer);
-  GLAPI void APIENTRY glBindRenderbuffer (GLenum target, GLuint renderbuffer);
-  GLAPI void APIENTRY glDeleteRenderbuffers (GLsizei n, const GLuint *renderbuffers);
-  GLAPI void APIENTRY glGenRenderbuffers (GLsizei n, GLuint *renderbuffers);
-  GLAPI void APIENTRY glRenderbufferStorage (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
-  GLAPI void APIENTRY glGetRenderbufferParameteriv (GLenum target, GLenum pname, GLint *params);
-  GLAPI GLboolean APIENTRY glIsFramebuffer (GLuint framebuffer);
-  GLAPI void APIENTRY glBindFramebuffer (GLenum target, GLuint framebuffer);
-  GLAPI void APIENTRY glDeleteFramebuffers (GLsizei n, const GLuint *framebuffers);
-  GLAPI void APIENTRY glGenFramebuffers (GLsizei n, GLuint *framebuffers);
-  GLAPI GLenum APIENTRY glCheckFramebufferStatus (GLenum target);
-  GLAPI void APIENTRY glFramebufferTexture1D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
-  GLAPI void APIENTRY glFramebufferTexture2D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
-  GLAPI void APIENTRY glFramebufferTexture3D (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
-  GLAPI void APIENTRY glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
-  GLAPI void APIENTRY glGetFramebufferAttachmentParameteriv (GLenum target, GLenum attachment, GLenum pname, GLint *params);
-  GLAPI void APIENTRY glGenerateMipmap (GLenum target);
-  GLAPI void APIENTRY glBlitFramebuffer (GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
-  GLAPI void APIENTRY glRenderbufferStorageMultisample (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
-  GLAPI void APIENTRY glFramebufferTextureLayer (GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer);
+  typedef  void (*glBindRenderbuffer_func) (GLenum target, GLuint renderbuffer);
+  typedef  void (*glDeleteRenderbuffers_func) (GLsizei n, const GLuint *renderbuffers);
+  typedef  void (*glGenRenderbuffers_func) (GLsizei n, GLuint *renderbuffers);
+  typedef  void (*glRenderbufferStorage_func) (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+  typedef  void (*glGetRenderbufferParameteriv_func) (GLenum target, GLenum pname, GLint *params);
+  typedef  GLboolean (*glIsFramebuffer_func) (GLuint framebuffer);
+  typedef  void (*glBindFramebuffer_func) (GLenum target, GLuint framebuffer);
+  typedef  void (*glDeleteFramebuffers_func) (GLsizei n, const GLuint *framebuffers);
+  typedef  void (*glGenFramebuffers_func) (GLsizei n, GLuint *framebuffers);
+  typedef  GLenum (*glCheckFramebufferStatus_func) (GLenum target);
+  typedef  void (*glFramebufferTexture2D_func) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+  typedef  void (*glFramebufferRenderbuffer_func) (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+  typedef  void (*glGetFramebufferAttachmentParameteriv_func) (GLenum target, GLenum attachment, GLenum pname, GLint *params);
+  typedef  void (*glGenerateMipmap_func) (GLenum target);
 }
-#endif
+extern glBindRenderbuffer_func glBindRenderbuffer;
+extern glDeleteRenderbuffers_func glDeleteRenderbuffers;
+extern glGenRenderbuffers_func glGenRenderbuffers;
+extern glRenderbufferStorage_func glRenderbufferStorage;
+extern glGetRenderbufferParameteriv_func glGetRenderbufferParameteriv;
+extern glIsFramebuffer_func glIsFramebuffer;
+extern glBindFramebuffer_func glBindFramebuffer;
+extern glDeleteFramebuffers_func glDeleteFramebuffers;
+extern glGenFramebuffers_func glGenFramebuffers;
+extern glCheckFramebufferStatus_func glCheckFramebufferStatus;
+extern glFramebufferTexture2D_func glFramebufferTexture2D;
+extern glFramebufferRenderbuffer_func glFramebufferRenderbuffer;
+extern glGetFramebufferAttachmentParameteriv_func glGetFramebufferAttachmentParameteriv;
+extern glGenerateMipmap_func glGenerateMipmap;
 
 using namespace std;
 
@@ -86,14 +92,14 @@ struct Key
 	char KeyName[32];
 };
 
-#if defined(PANDORA) || defined(ODROID)
 typedef struct
 {
 	GLuint fb;
 	GLuint rb;
 	GLuint fbo;
 } tFBO;
-#endif
+
+extern int vpStartX, vpStartY, vpWidth, vpHeight;
 
 #define TIME_STEP 0.02f//50frames sec
 #define SCROLL_SPEED 0.4f
@@ -219,9 +225,7 @@ private:
 
 	// render target related
 //		SDL_RenderTarget *pMainTarget,*pPostTarget, *p64x64Target, *p256x256Target;
-		#if defined(PANDORA) || defined(ODROID)
 		tFBO pMainTarget, pPostTarget, p64x64Target, p256x256Target;	// Framebuffer
-		#endif
 
 		void BindMainContext();
 		void FinalizeMainContext();

@@ -21,7 +21,7 @@ class Sample : public Sound
 {
 public:
 	#ifdef NO_FMOD
-	Sample(){pSample = 0; pLoop = 1;}
+	Sample(){pSample = 0; pLoop = 1; name=NULL; }
 	#else
 	Sample(){pSample = 0;}
 	#endif
@@ -37,7 +37,7 @@ private:
 #ifdef NO_FMOD
 	Mix_Chunk* pSample;
 	int	   pLoop;
-char* name;
+	char* name;
 #else
 	FSOUND_SAMPLE* pSample;
 #endif

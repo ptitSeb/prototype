@@ -297,7 +297,7 @@ void Engine::RenderSplash(const float interp)
 
 //	gLog.OutPut("RenderSplash START\n");
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	glColor4f(1,1,1,1);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -485,7 +485,7 @@ void Engine::UpdateConfig(float delta)
 void Engine::RenderConfig(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 	glColor4f(1,1,1,1);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	UTIL_GL::BindTexture(GL_TEXTURE_2D,imgSplashBack);
@@ -652,7 +652,7 @@ void Engine::UpdateGameOver(float delta)
 void Engine::RenderGameOver(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 	
 	glColor4f(1,1,1,1);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -701,7 +701,7 @@ void Engine::UpdateIntro(float delta)
 void Engine::RenderIntro(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	float s = (mTimer.GetTime()-fUIDelay)*25;
 	mFont1.SetAlignment(ALIGN_LEFT);
@@ -765,7 +765,7 @@ void Engine::UpdateIntro2(float delta)
 void Engine::RenderIntro2(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	UTIL_GL::BindTexture(GL_TEXTURE_2D, imgProtoTypeMk1);
 	glColor4f(1,1,1,1);
@@ -811,7 +811,7 @@ void Engine::UpdateIntro3(float delta)
 void Engine::RenderIntro3(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	glColor4f(1,1,1,1);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -881,7 +881,7 @@ void Engine::UpdateIntro4(float delta)
 void Engine::RenderIntro4(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	glColor4f(1,1,1,1);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -959,7 +959,7 @@ void Engine::UpdateHiScores(float delta)
 void Engine::RenderHiScores(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	glColor4f(1,1,1,1);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -1098,7 +1098,7 @@ void Engine::UpdateEnterHiScore(float delta)
 void Engine::RenderEnterHiScore(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	glColor4f(1,1,1,1);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -1143,7 +1143,7 @@ void Engine::UpdateCongratulations(float delta)
 void Engine::RenderCongratulations(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 
 	glDisable(GL_BLEND);
 	UTIL_GL::BindTexture(GL_TEXTURE_2D, imgCongrats);
@@ -1217,7 +1217,7 @@ void Engine::UpdateHowToPlay(float delta)
 void Engine::RenderHowToPlay(const float interp)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	UTIL_GL::GL2D::SetOrtho((float)winWidth,(float)winHeight);
+	UTIL_GL::GL2D::SetOrtho(/*(float)winWidth,(float)winHeight*/640, 480);
 	UTIL_GL::SetBlend(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	UTIL_GL::BindTexture(GL_TEXTURE_2D,imgSplashBack);
 	glColor4f(0.3f,0.6f,0.8f,0.8f);
