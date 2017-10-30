@@ -94,7 +94,7 @@ void Engine::PostCharge(float interp)
 	float px=UTIL_Misc::Interpolate(mPlayer.Pos.x,mPlayer.oPos.x,interp)-scr;
 	float py=UTIL_Misc::Interpolate(mPlayer.Pos.y,mPlayer.oPos.y,interp);
 	glTranslatef(-(px+64),-py,0);
-	#if defined(PANDORA) || defined(ODROID)
+
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, pMainTarget.fb);
 	glColor4f(1,1,1,1);
@@ -110,9 +110,7 @@ void Engine::PostCharge(float interp)
 		glVertex2f(0,512);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
-	#else
-	RenderMainContext();
-	#endif
+
 	glTranslatef(px+64,py,0);
 
 	px+=64;
