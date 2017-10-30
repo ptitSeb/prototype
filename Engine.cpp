@@ -43,7 +43,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	winWidth = width;
 	winHeight = height;
 	int vsync=0, bpp=32, log=1, joystick=1;
-	#if defined(PANDORA) || defined(ODROID)
+	#ifdef PANDORA
 	int fullscreen=1;
 	#else
 	int fullscreen = fscreen?1:0;
