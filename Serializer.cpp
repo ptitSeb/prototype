@@ -1,5 +1,5 @@
 #include "Serializer.h"
-//#define PRINT_SERIAL
+#define PRINT_SERIAL
 //================================================================================================//
 						/**************************************************
 						** Serializer:	Will read/write config variables **	
@@ -46,13 +46,34 @@ void Serializer::ReadVariable(string file, string varname, int& value)
 		{
 			getline(f,s);
 			string tok;
+			string tok2;
+			size_t p = s.find('=');
+			if(p!=string::npos) {
+				tok = s.substr(0, p);
+				tok2 = s.substr(p+1, string::npos);
+				//trim tok (there must be better way to do that...)
+				while(tok.size() && tok[0]==' ')
+					tok.erase(0, 1);
+				if(tok.find(' ')!=string::npos)
+					tok.erase(tok.find(' '), string::npos);
+				if(tok.find('\t')!=string::npos)
+					tok.erase(tok.find('\t'), string::npos);
+			}
 //			stringstream(s) >> tok;
 			if(tok == varname)
 			{
-				string tok2;
 //				stringstream(s) >> tok >> tok2 >> value;
+				while(tok2.size() && tok2[0]==' ')
+					tok2.erase(0, 1);
+				if(tok2.find(' ')!=string::npos)
+					tok2.erase(tok2.find(' '), string::npos);
+				if(tok2.find('\t')!=string::npos)
+					tok2.erase(tok2.find('\t'), string::npos);
+				int tmp;
+				if(sscanf(tok2.c_str(), "%d", &tmp)==1)
+					value = tmp;
 #ifdef PRINT_SERIAL
-				printf("%s read from file %s\n",tok.c_str(),file.c_str());
+					printf("%s read from file %s\n",tok.c_str(),file.c_str());
 #endif
 				break;
 			}
@@ -84,11 +105,31 @@ void Serializer::ReadVariable(string file, string varname, float& value)
 		{
 			getline(f,s);
 			string tok;
-//			stringstream(s) >> tok;
+			string tok2;
+			size_t p = s.find('=');
+			if(p!=string::npos) {
+				tok = s.substr(0, p);
+				tok2 = s.substr(p+1, string::npos);
+				//trim tok
+				while(tok.size() && tok[0]==' ')
+					tok.erase(0, 1);
+				if(tok.find(' ')!=string::npos)
+					tok.erase(tok.find(' '), string::npos);
+				if(tok.find('\t')!=string::npos)
+					tok.erase(tok.find('\t'), string::npos);
+			}
 			if(tok == varname)
 			{
-				string tok2;
 //				stringstream(s) >> tok >> tok2 >> value;
+				while(tok2.size() && tok2[0]==' ')
+					tok2.erase(0, 1);
+				if(tok2.find(' ')!=string::npos)
+					tok2.erase(tok2.find(' '), string::npos);
+				if(tok2.find('\t')!=string::npos)
+					tok2.erase(tok2.find('\t'), string::npos);
+				float tmp;
+				if(sscanf(tok2.c_str(), "%f", &tmp)==1)
+				value = tmp;
 #ifdef PRINT_SERIAL
 				printf("%s read from file %s\n",tok.c_str(),file.c_str());
 #endif
