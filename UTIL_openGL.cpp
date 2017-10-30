@@ -140,7 +140,7 @@ namespace UTIL_GL
 			}
 			glDisable(GL_TEXTURE_2D);
 //printf("Loadimage \"%s\" %ix%ix%i\n", name.c_str(), width, height, bpp);
-			delete data;
+			delete[] data;
 			return ID;
 		}
 		unsigned char*  LoadImageData(std::string name, unsigned int& width, unsigned int& height, unsigned int& bpp)
