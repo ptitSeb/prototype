@@ -48,7 +48,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	#else
 	int fullscreen = fscreen?1:0;
 	#endif
-	int renderTargets=0;
+	int renderTargets=1;
 	int FPS=0;
 	int scanlines = 0;
 	char enginepath[PATH_MAX];
