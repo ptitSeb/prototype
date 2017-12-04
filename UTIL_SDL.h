@@ -1,5 +1,9 @@
 #pragma once
+#ifdef USE_SDL2
+#include <SDL2/SDL.h>
+#else
 #include <SDL/SDL.h>
+#endif
 #include "UTIL_openGL.h"
 #include "Log.h"
 #define SDL_VERSION_1_3
@@ -9,8 +13,14 @@
 									 ** SDL helpers **
 									 *****************/
 //================================================================================================//
+#ifdef USE_SDL2
+extern SDL_Window	  *glWindow;
+extern SDL_GLContext glContext;
+#endif
 namespace UTIL_SDL
 {
+	//SDL2 related
+
 	bool InitSDL(char* winName, int width, int height, int bpp, bool vsync, bool fscreen);
 	bool InitJoystick();
 //================================================================================================//

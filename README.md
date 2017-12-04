@@ -20,6 +20,8 @@ To compile on ODROID, type
 To compile on Linux x86, type
 `make LINUX=1`
 
+SDL2 is also supported, just add `SDL2=1` to the make command (better `make clean` before if needed)
+
 For more info, the website of the original game is here: http://xout.blackened-interactive.com/ProtoType/Prototype.html
 
 For info on the Pandora version, go there: https://pyra-handheld.com/boards/threads/prototype.71887/

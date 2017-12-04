@@ -2,7 +2,11 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+#ifdef USE_SDL2
+#include <SDL2/SDL.h>
+#else
 #include <SDL/SDL.h>
+#endif
 #include <fstream>
 
 #include "Sound.h"

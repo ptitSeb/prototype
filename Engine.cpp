@@ -143,7 +143,11 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	mFont1.SetBlendMode(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	mFont1.SetScale(0.5f,1.0f);
 	mFont1.Print("LOADING...",550,430);
+#ifdef USE_SDL2
+	SDL_GL_SwapWindow(glWindow);
+#else
 	SDL_GL_SwapBuffers();
+#endif
 #ifdef USE_C4A
 	fGameDifficulty = 4;//easy - C4A
 #else
@@ -342,7 +346,11 @@ PROFILE_START_SLICE("ENGINE_Render");
 PROFILE_END_SLICE("ENGINE_Render");
 	if(bScanlines)
 		RenderScanLines();
-	SDL_GL_SwapBuffers();
+#ifdef USE_SDL2
+		SDL_GL_SwapWindow(glWindow);
+#else
+		SDL_GL_SwapBuffers();
+#endif
 
 PROFILE_END_SLICE("ENGINE_Pump");
 PROFILE_FRAME_END;
