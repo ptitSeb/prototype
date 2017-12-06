@@ -17,6 +17,14 @@ namespace UTIL_SDL
 									 ********************/
 //================================================================================================//
 
+#ifdef USE_SDL2
+//SDL2 related
+	void GetWindowSizeSDL2(int &width, int &height)
+	{
+		SDL_GL_GetDrawableSize(glWindow, &width, &height);
+	}
+#endif
+
 	bool InitSDL(char* winName, int width, int height, int bpp, bool vsync, bool fscreen)
 	{
 		gLog.OutPut("\n[Initializing Video Settings]\n");
@@ -31,7 +39,7 @@ namespace UTIL_SDL
 			return false;
 		}
 #ifdef USE_SDL2
-		int flags = SDL_WINDOW_OPENGL | (fscreen?SDL_WINDOW_FULLSCREEN:0);
+		int flags = SDL_WINDOW_OPENGL | (fscreen?SDL_WINDOW_FULLSCREEN_DESKTOP:0);
 #else
 		int flags = SDL_OPENGL | (fscreen?SDL_FULLSCREEN:0);
 		SDL_WM_SetIcon(SDL_LoadBMP("icon1.bmp"), NULL);
@@ -61,6 +69,7 @@ namespace UTIL_SDL
 			return false;
 		}
 		SDL_SetWindowIcon(glWindow, SDL_LoadBMP("icon1.bmp"));
+		GetWindowSizeSDL2(width, height);
 #else
 		if(SDL_SetVideoMode(width, height, bpp, flags) == 0)
 		{

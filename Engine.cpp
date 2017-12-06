@@ -85,6 +85,9 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	#endif
 		return;
 #ifndef PANDORA
+#ifdef USE_SDL2
+	UTIL_SDL::GetWindowSizeSDL2(winWidth, winHeight);
+#endif
 	// adjust ViewPort stuff...
 	float ratioX = (float)winWidth/640.0f;
 	float ratioY = (float)winHeight/480.0f;

@@ -19,7 +19,10 @@ extern SDL_GLContext glContext;
 #endif
 namespace UTIL_SDL
 {
+#ifdef USE_SDL2
 	//SDL2 related
+	void GetWindowSizeSDL2(int &width, int &height);
+#endif
 
 	bool InitSDL(char* winName, int width, int height, int bpp, bool vsync, bool fscreen);
 	bool InitJoystick();

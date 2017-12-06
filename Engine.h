@@ -158,6 +158,7 @@ private:
 
 		void InitializeKeys();
 		void CheckJoystickMotion(SDL_Event e);
+		void CheckJoystickMotion(SDL_Event e);
 		void ConfigureKey(int keyIndex, bool set, int keyPressed);
 		void KeyStateAlltered(int key,bool state);
 		void KeysPostUpdate();
