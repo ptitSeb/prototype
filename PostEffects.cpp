@@ -12,7 +12,7 @@ void Engine::BindMainContext()
 		return;
 	}
 	glEnable(GL_TEXTURE_2D);
-	glBindFramebuffer(GL_FRAMEBUFFER, pMainTarget.fbo);
+	pglBindFramebuffer(GL_FRAMEBUFFER, pMainTarget.fbo);
 	glViewport(0,0,1024,512);
 	UTIL_GL::GL2D::SetOrtho(1024,512);
 
@@ -29,7 +29,7 @@ void Engine::FinalizeMainContext()
 		return;
 
 	glEnable(GL_TEXTURE_2D);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	pglBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(vpStartX, vpStartY, vpWidth, vpHeight);
 
 	RenderMainContext();
@@ -82,9 +82,9 @@ void Engine::PostCharge(float interp)
 	if(!bRenderTargetSupport)
 		return;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	pglBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnable(GL_TEXTURE_2D);
-	glBindFramebuffer(GL_FRAMEBUFFER, p64x64Target.fbo);
+	pglBindFramebuffer(GL_FRAMEBUFFER, p64x64Target.fbo);
 	glViewport(0,0,64,64);
 
 	glClearColor(0,0,0,0);
@@ -115,7 +115,7 @@ void Engine::PostCharge(float interp)
 
 	px+=64;
 	glEnable(GL_TEXTURE_2D);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//pglBindFramebuffer(GL_FRAMEBUFFER, 0);
 	BindMainContext();
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, p64x64Target.fb);

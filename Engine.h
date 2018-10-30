@@ -73,20 +73,20 @@ extern "C" {
   typedef  void (*glGetFramebufferAttachmentParameteriv_func) (GLenum target, GLenum attachment, GLenum pname, GLint *params);
   typedef  void (*glGenerateMipmap_func) (GLenum target);
 }
-extern glBindRenderbuffer_func glBindRenderbuffer;
-extern glDeleteRenderbuffers_func glDeleteRenderbuffers;
-extern glGenRenderbuffers_func glGenRenderbuffers;
-extern glRenderbufferStorage_func glRenderbufferStorage;
-extern glGetRenderbufferParameteriv_func glGetRenderbufferParameteriv;
-extern glIsFramebuffer_func glIsFramebuffer;
-extern glBindFramebuffer_func glBindFramebuffer;
-extern glDeleteFramebuffers_func glDeleteFramebuffers;
-extern glGenFramebuffers_func glGenFramebuffers;
-extern glCheckFramebufferStatus_func glCheckFramebufferStatus;
-extern glFramebufferTexture2D_func glFramebufferTexture2D;
-extern glFramebufferRenderbuffer_func glFramebufferRenderbuffer;
-extern glGetFramebufferAttachmentParameteriv_func glGetFramebufferAttachmentParameteriv;
-extern glGenerateMipmap_func glGenerateMipmap;
+extern glBindRenderbuffer_func pglBindRenderbuffer;
+extern glDeleteRenderbuffers_func pglDeleteRenderbuffers;
+extern glGenRenderbuffers_func pglGenRenderbuffers;
+extern glRenderbufferStorage_func pglRenderbufferStorage;
+extern glGetRenderbufferParameteriv_func pglGetRenderbufferParameteriv;
+extern glIsFramebuffer_func pglIsFramebuffer;
+extern glBindFramebuffer_func pglBindFramebuffer;
+extern glDeleteFramebuffers_func pglDeleteFramebuffers;
+extern glGenFramebuffers_func pglGenFramebuffers;
+extern glCheckFramebufferStatus_func pglCheckFramebufferStatus;
+extern glFramebufferTexture2D_func pglFramebufferTexture2D;
+extern glFramebufferRenderbuffer_func pglFramebufferRenderbuffer;
+extern glGetFramebufferAttachmentParameteriv_func pglGetFramebufferAttachmentParameteriv;
+extern glGenerateMipmap_func pglGenerateMipmap;
 
 using namespace std;
 

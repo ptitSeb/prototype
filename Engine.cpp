@@ -12,20 +12,20 @@ int vpStartY = 0;
 int vpWidth = 640;
 int vpHeight = 480;
 
-glBindRenderbuffer_func glBindRenderbuffer = NULL;
-glDeleteRenderbuffers_func glDeleteRenderbuffers = NULL;
-glGenRenderbuffers_func glGenRenderbuffers = NULL;
-glRenderbufferStorage_func glRenderbufferStorage = NULL;
-glGetRenderbufferParameteriv_func glGetRenderbufferParameteriv = NULL;
-glIsFramebuffer_func glIsFramebuffer = NULL;
-glBindFramebuffer_func glBindFramebuffer = NULL;
-glDeleteFramebuffers_func glDeleteFramebuffers = NULL;
-glGenFramebuffers_func glGenFramebuffers = NULL;
-glCheckFramebufferStatus_func glCheckFramebufferStatus = NULL;
-glFramebufferTexture2D_func glFramebufferTexture2D = NULL;
-glFramebufferRenderbuffer_func glFramebufferRenderbuffer = NULL;
-glGetFramebufferAttachmentParameteriv_func glGetFramebufferAttachmentParameteriv = NULL;
-glGenerateMipmap_func glGenerateMipmap = NULL;
+glBindRenderbuffer_func pglBindRenderbuffer = NULL;
+glDeleteRenderbuffers_func pglDeleteRenderbuffers = NULL;
+glGenRenderbuffers_func pglGenRenderbuffers = NULL;
+glRenderbufferStorage_func pglRenderbufferStorage = NULL;
+glGetRenderbufferParameteriv_func pglGetRenderbufferParameteriv = NULL;
+glIsFramebuffer_func pglIsFramebuffer = NULL;
+glBindFramebuffer_func pglBindFramebuffer = NULL;
+glDeleteFramebuffers_func pglDeleteFramebuffers = NULL;
+glGenFramebuffers_func pglGenFramebuffers = NULL;
+glCheckFramebufferStatus_func pglCheckFramebufferStatus = NULL;
+glFramebufferTexture2D_func pglFramebufferTexture2D = NULL;
+glFramebufferRenderbuffer_func pglFramebufferRenderbuffer = NULL;
+glGetFramebufferAttachmentParameteriv_func pglGetFramebufferAttachmentParameteriv = NULL;
+glGenerateMipmap_func pglGenerateMipmap = NULL;
 
 
 Engine *gpEngine;
@@ -737,7 +737,7 @@ void Engine::InitializeRenderTargets()
 {
 	if(!bRenderTargetSupport)
 		return;
-	#define GO(A) A = (A##_func) SDL_GL_GetProcAddress(#A); if(A==NULL) {bRenderTargetSupport=false; return;}
+	#define GO(A) p##A = (A##_func) SDL_GL_GetProcAddress(#A); if(p##A==NULL) {bRenderTargetSupport=false; return;}
 	GO(glBindRenderbuffer);
 	GO(glDeleteRenderbuffers);
 	GO(glGenRenderbuffers);
@@ -755,25 +755,25 @@ void Engine::InitializeRenderTargets()
 	#undef GO
 
 	#define CREATE_FB(name, width, height) 	\
-	glGenFramebuffers(1, &name.fbo);			\
 	glGenTextures(1, &name.fb);				\
-	glGenRenderbuffers(1, &name.rb);			\
+	pglGenFramebuffers(1, &name.fbo);			\
+	pglGenRenderbuffers(1, &name.rb);			\
 											\
 	glBindTexture(GL_TEXTURE_2D, name.fb);	\
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);	\
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);	\
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);	\
     										\
-    glBindFramebuffer(GL_FRAMEBUFFER, name.fbo);	\
-    glBindRenderbuffer(GL_RENDERBUFFER, name.rb);	\
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);	\
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);			\
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, name.rb);	\
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, name.fb, 0);	\
+    pglBindFramebuffer(GL_FRAMEBUFFER, name.fbo);	\
+    pglBindRenderbuffer(GL_RENDERBUFFER, name.rb);	\
+    pglRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);	\
+    pglBindRenderbuffer(GL_RENDERBUFFER, 0);			\
+    pglFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, name.rb);	\
+    pglFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, name.fb, 0);	\
     glBindTexture(GL_TEXTURE_2D, 0);								\
-    res = glCheckFramebufferStatus(GL_FRAMEBUFFER);	\
+    res = pglCheckFramebufferStatus(GL_FRAMEBUFFER);	\
     printf("Framebuffer " #name " result=0x%04X\n", res);	\
-    glBindFramebuffer(GL_FRAMEBUFFER, 0)
+    pglBindFramebuffer(GL_FRAMEBUFFER, 0)
 
 	GLenum res;
     CREATE_FB(pMainTarget, 1024, 512);
