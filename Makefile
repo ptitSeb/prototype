@@ -7,6 +7,10 @@ else ifeq ($(LINUX),1)
 CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings
 LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm
 DEST          = /usr/local
+else ifeq ($(AMIGAOS4),1)
+CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings -DAMIGAOS4
+LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm
+DEST          = /usr/local
 else
 CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fsingle-precision-constant -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings -DPANDORA -DUSE_C4A
 LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm

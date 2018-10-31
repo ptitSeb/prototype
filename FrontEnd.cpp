@@ -453,7 +453,11 @@ void Engine::UpdateConfig(float delta)
 //			DeleteFile("Controls.cfg");
 
 			char controlspath[PATH_MAX];
+#ifdef AMIGAOS4
+			snprintf(controlspath, PATH_MAX, "%s.prototype/Controls.cfg", "PROGDIR:");
+#else
 			snprintf(controlspath, PATH_MAX, "%s/.prototype/Controls.cfg", getenv("HOME"));
+#endif
 			gSerializer.PutComment(controlspath,"[Control Configuration]");
 			for(int n=0; n<6;n++)
 			{

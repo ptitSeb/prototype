@@ -12,7 +12,11 @@ Log gLog;
 void Log::OutPut(string str)
 {
 	char logpath[PATH_MAX];
+#ifdef AMIGAOS4
+	snprintf(logpath, PATH_MAX, "%s.prototype/Logfile.txt", "PROGDIR:");
+#else
 	snprintf(logpath, PATH_MAX, "%s/.prototype/Logfile.txt", getenv("HOME"));
+#endif
 	if(!bKeepLog)
 		return;
 #ifdef PRINT_TO_CONSOLE

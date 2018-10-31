@@ -52,7 +52,11 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	int FPS=0;
 	int scanlines = 0;
 	char enginepath[PATH_MAX];
+#ifdef AMIGAOS4
+	snprintf(enginepath, PATH_MAX, "%s.prototype/Engine.cfg", "PROGDIR:");
+#else
 	snprintf(enginepath, PATH_MAX, "%s/.prototype/Engine.cfg", getenv("HOME"));
+#endif
 
 	gSerializer.PutComment(enginepath,"[Display Properties]");
 #ifndef PANDORA
@@ -404,7 +408,11 @@ void Engine::InitializeKeys()
 	}
 
 	char controlspath[PATH_MAX];
+#ifdef AMIGAOS4
+	snprintf(controlspath, PATH_MAX, "%s.prototype/Controls.cfg", "PROGDIR:");
+#else
 	snprintf(controlspath, PATH_MAX, "%s/.prototype/Controls.cfg", getenv("HOME"));
+#endif
 
 	gSerializer.PutComment(controlspath,"[Control Configuration]");
 	for(int n=0; n<6;n++)
@@ -1295,7 +1303,11 @@ void Engine::LoadScores()
 	string s10("*****");
 
 	char scorepath[PATH_MAX];
+#ifdef AMIGAOS4
+	snprintf(scorepath, PATH_MAX, "%s.prototype/score.dat", "PROGDIR:");
+#else
 	snprintf(scorepath, PATH_MAX, "%s/.prototype/score.dat", getenv("HOME"));
+#endif
 
 	gSerializer.ReadVariable(scorepath,"1a",iHiScore[0]);
 	gSerializer.ReadVariable(scorepath,"1b",s1);
@@ -1331,7 +1343,11 @@ void Engine::LoadScores()
 void Engine::SaveScores()
 {
 	char scorepath[PATH_MAX];
+#ifdef AMIGAOS4
+	snprintf(scorepath, PATH_MAX, "%s.prototype/score.dat", "PROGDIR:");
+#else
 	snprintf(scorepath, PATH_MAX, "%s/.prototype/score.dat", getenv("HOME"));
+#endif
 
 //	DeleteFile("score.dat");
 	gSerializer.ReadVariable(scorepath,"1a",iHiScore[0]);
