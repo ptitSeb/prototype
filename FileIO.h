@@ -140,12 +140,33 @@ public:
 
 		return true;
 	}
+#ifdef AMIGAOS4
+// generic little->big conversion
+template <class T> inline void littleBigEndian (T *x) {
+    unsigned char *toConvert = reinterpret_cast<unsigned char *>(x);
+	unsigned char tmp;
+	const int sz = sizeof(T);
+    for (size_t i = 0; i < (sz/2+1); ++i) {
+	  tmp = toConvert[i];
+      toConvert[i] = toConvert[sz - i - 1];
+	  toConvert[sizeof(T) - i - 1] = tmp;
+	}
+  }
+#endif
 	template<class T>
 	bool WriteBinary(T* data)
 	{
 		if(!AppendFileBinary())
 			return false;//cant open file
 
+#ifdef AMIGAOS4
+		if(sizeof(T)>1) {
+			T tmp;
+			memcpy(&tmp, data, sizeof(tmp));
+			littleBigEndian(&tmp);
+			fwrite(&tmp,sizeof(T),1,fPTR);//write the line
+		} else
+#endif
 		fwrite(data,sizeof(T),1,fPTR);//write the line
 		//get new file OFFSET
 		fseek(fPTR,0,SEEK_CUR);
@@ -161,6 +182,16 @@ public:
 		if(!AppendFileBinary())
 			return false;//cant open file
 
+#ifdef AMIGAOS4
+		if(sizeof(T)>1) {
+			T tmp;
+			for(int i=0; i<size; ++i) {
+				memcpy(&tmp, data+i, sizeof(tmp));
+				littleBigEndian(&tmp);
+				fwrite(&tmp,sizeof(T),1,fPTR);//write the line
+			}
+		} else
+#endif
 		fwrite(data,sizeof(T),size,fPTR);//write the line
 		//get new file OFFSET
 		fseek(fPTR,0,SEEK_CUR);
@@ -183,6 +214,9 @@ public:
 		m_lFileOFFSET = ftell(fPTR);
 		//close file and return line
 		fclose(fPTR);
+#ifdef AMIGAOS4
+		littleBigEndian(data);
+#endif
 
 		return true;
 	}
@@ -199,9 +233,14 @@ public:
 		m_lFileOFFSET = ftell(fPTR);
 		//close file and return line
 		fclose(fPTR);
+#ifdef AMIGAOS4
+		for(int i=0; i<size; ++i)
+			littleBigEndian(data+i);
+#endif
 
 		return true;
 	}
+
 	void ReleaseFile()
 	{}
 };
