@@ -8,8 +8,10 @@ CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings
 LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm
 DEST          = /usr/local
 else ifeq ($(AMIGAOS4),1)
+CPP			  = ppc-amigaos-gcc
+LD			  = ppc-amigaos-gcc -static
 CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings -DAMIGAOS4
-LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm
+LDFLAGS       = -lSDL_image -lwebp -lpng12 -ltiff -ljpeg_8b -lmikmod -lmodplug -lvorbisfile -lvorbis -logg -lflac -lsmpeg libgl4es.a -lstdc++ -lz -lpthread
 DEST          = /usr/local
 else
 CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fsingle-precision-constant -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings -DPANDORA -DUSE_C4A
@@ -24,9 +26,17 @@ ifeq ($(SDL2),1)
 SDL_LDFLAGS   = $(shell sdl2-config --libs) 
 SDL_CFLAGS    = $(shell sdl2-config --cflags)
 CXXFLAGS     += -DUSE_SDL2
-LDFLAGS      += -lSDL2_mixer
+ifeq ($(AMIGAOS4),1)
+LDFLAGS		 +=  -lSDL2_mixer -lSDL2_image libSDL2.a
+else
+LDFLAGS      += -lSDL2_mixer 
+endif
+else
+ifeq ($(AMIGAOS4),1)
+LDFLAGS      += -lSDL_mixer -lSDL_image libSDL.a 
 else
 LDFLAGS      += -lSDL_mixer
+endif
 SDL_LDFLAGS   = $(shell sdl-config --libs) 
 SDL_CFLAGS    = $(shell sdl-config --cflags)
 endif

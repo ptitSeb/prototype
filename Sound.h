@@ -1,6 +1,10 @@
 #pragma once
 #ifdef NO_FMOD
+#ifdef USE_SDL2
+#include <SDL2/SDL_mixer.h>
+#else
 #include <SDL/SDL_mixer.h>
+#endif
 #else
 #include <fmod.h>
 #endif
