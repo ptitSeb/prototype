@@ -1,11 +1,11 @@
 CPP	      = g++
 ifeq ($(ODROID),1)
 CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=hard -fsingle-precision-constant -g -ffast-math -I./ -I/usr/include/GL -Wno-write-strings -DODROID
-LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm
+LDFLAGS       = -lGL -lm
 DEST          = /usr/local
 else ifeq ($(LINUX),1)
 CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings
-LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm
+LDFLAGS       = -lGL -lm
 DEST          = /usr/local
 else ifeq ($(AMIGAOS4),1)
 CPP			  = ppc-amigaos-gcc
@@ -15,7 +15,7 @@ LDFLAGS       = -lSDL_image -lwebp -lpng12 -ltiff -ljpeg_8b -lmikmod -lmodplug -
 DEST          = /usr/local
 else
 CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fsingle-precision-constant -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings -DPANDORA -DUSE_C4A
-LDFLAGS       = -lGL -lGLU -lILUT -lILU -lIL -lm
+LDFLAGS       = -lGL -lm
 DEST	      = .
 endif
 

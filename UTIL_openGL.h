@@ -1,20 +1,16 @@
-#define ILUT_USE_OPENGL
 #pragma once
 //#include <gl/glew.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif
 #include <GL/gl.h>
-#include <GL/glu.h>
 #include <GL/glext.h>
 //#include <gl/wglext.h>
-#include <IL/il.h>
-#include <IL/ilu.h>
-#include <IL/ilut.h>
 #include <cstring>
 #include <sstream>
 #include "Log.h"
 //#define EXTENSION_SUPPORT_1_1	
+#include "stb_image.h"
 
 namespace UTIL_GL
 {
@@ -48,10 +44,9 @@ namespace UTIL_GL
 		GLuint LoadImage(std::string name);
 		GLuint LoadImage(std::string name, const int min, const int mag, const int wrapx, const int wrapy);
 		GLuint LoadImage(std::string name, unsigned int& width, unsigned int& height);
-		unsigned char* LoadImageData(std::string name, unsigned int& width, unsigned int& height);//returns pixeldata - you must free this yourself!
+		unsigned char* LoadImageData(std::string name, unsigned int& width, unsigned int& height, unsigned int& bpp);//returns pixeldata - you must free this yourself!
 		class ImagePrivate
 		{
-			static ILuint DevilLoadImage(std::string name);
 			friend GLuint LoadImage(std::string name);
 			friend GLuint LoadImage(std::string name, const int min, const int mag, const int wrapx, const int wrapy);
 			friend GLuint LoadImage(std::string name, unsigned int& width, unsigned int& height);

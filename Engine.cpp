@@ -129,7 +129,6 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 		bJoystickSupported = false;
 	InitializeKeys();
 
-	InitDevil();
 	InitFmod();
 
 	LoadScores();
@@ -190,7 +189,6 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 Engine::~Engine(void)
 {
 	gLog.OutPut("\n[Engine Shutdown]\n");
-	ilShutDown();
 	#ifdef NO_FMOD
 	Mix_CloseAudio();
 	#else
@@ -198,20 +196,6 @@ Engine::~Engine(void)
 	#endif
 	SDL_Quit();
 	SaveScores();
-	gLog.OutPut("Complete...\n\n");
-}
-//================================================================================================//
-						/*********************
-						** Initialize Devil **	
-						**********************/
-//================================================================================================//
-void Engine::InitDevil()
-{
-	gLog.OutPut("\n[Initializing Devil]\n");
-	ilInit();
-	iluInit();
-	ilutInit();
-	ilutRenderer(ILUT_OPENGL);
 	gLog.OutPut("Complete...\n\n");
 }
 //================================================================================================//

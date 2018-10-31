@@ -57,6 +57,10 @@
 #include "SpaceTrash.h"
 #include <list>
 
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
 extern "C" {
   typedef  void (*glBindRenderbuffer_func) (GLenum target, GLuint renderbuffer);
   typedef  void (*glDeleteRenderbuffers_func) (GLsizei n, const GLuint *renderbuffers);

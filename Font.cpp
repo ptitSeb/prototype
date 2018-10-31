@@ -32,24 +32,22 @@ bool Font::LoadFont(char* name, char* shadowname)
 //printf("texID+1 ok\n");
 //else
 //printf("texID+1 not ok texID=%u tmp=%u\n", texID, tmp);
-	ILuint ImageName;
-	ilOriginFunc(IL_ORIGIN_UPPER_LEFT);
-	ilGenImages(1, &ImageName);
-	ilBindImage(ImageName);
-	if(!ilLoadImage(shadowname))
-	{
+	int x,y,n;
+	//stbi_set_flip_vertically_on_load(1);
+	unsigned char* data = stbi_load(shadowname, &x, &y, &n, 4);
+	//stbi_set_flip_vertically_on_load(0);
+	if(!data) {
 		gLog.OutPut("Failed to load fontset: ");
 		gLog.OutPut(shadowname);
 		gLog.OutPut("!\n");
-		ilDeleteImages(1, &ImageName);
 		return false;
 	}
+
 	gLog.OutPut("Image Loaded: ");
 	gLog.OutPut(shadowname);
 	gLog.OutPut(".\n");
 
-	unsigned int width=ilGetInteger(IL_IMAGE_WIDTH), height=ilGetInteger(IL_IMAGE_HEIGHT);
-	unsigned char* data = ilGetData();
+	unsigned int width=x, height=y;
 
 //unsigned int bpp=ilGetInteger(IL_IMAGE_BPP);
 //printf("Loadimage \"%s\" %ix%ix%i\n", name, width, height, bpp);
@@ -58,33 +56,32 @@ bool Font::LoadFont(char* name, char* shadowname)
 	UTIL_GL::TextureFilter(GL_LINEAR,GL_LINEAR);
 	UTIL_GL::TextureWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,data);
-	ilDeleteImages(1, &ImageName);
 
 	UTIL_GL::TextureFilter(GL_LINEAR,GL_LINEAR);
 	UTIL_GL::TextureWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+	stbi_image_free(data);
 
 	return true;
 }
 bool Font::GenerateGlyphs(char* name)
 {
-	ILuint ImageName;
-	ilOriginFunc(IL_ORIGIN_UPPER_LEFT);
-	ilGenImages(1, &ImageName);
-	ilBindImage(ImageName);
-	if(!ilLoadImage(name))
-	{
+	int x,y,n;
+	//stbi_set_flip_vertically_on_load(1);
+	unsigned char* data = stbi_load(name, &x, &y, &n, 4);
+	//stbi_set_flip_vertically_on_load(0);
+	if(!data) {
 		gLog.OutPut("Failed to load fontset: ");
 		gLog.OutPut(name);
 		gLog.OutPut("!\n");
-		ilDeleteImages(1, &ImageName);
 		return false;
 	}
+
 	gLog.OutPut("Image Loaded:");
 	gLog.OutPut(name);
 	gLog.OutPut(".\n");
 
-	unsigned int width=ilGetInteger(IL_IMAGE_WIDTH), height=ilGetInteger(IL_IMAGE_HEIGHT);
-	unsigned char* data = ilGetData();
+	unsigned int width=x, height=y;
 
 //unsigned int bpp=ilGetInteger(IL_IMAGE_BPP);
 //printf("Loadimage \"%s\" %ix%ix%i\n", name, width, height, bpp);
@@ -95,7 +92,8 @@ bool Font::GenerateGlyphs(char* name)
 	UTIL_GL::TextureFilter(GL_LINEAR,GL_LINEAR);
 	UTIL_GL::TextureWrap(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,data);
-	ilDeleteImages(1, &ImageName);
+	
+	stbi_image_free(data);
 
 	return true;
 }

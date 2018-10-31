@@ -69,57 +69,49 @@ namespace UTIL_GL
 //================================================================================================//
 	namespace Image
 	{
-		ILuint ImagePrivate::DevilLoadImage(std::string name)
-		{
-			ILuint ImageName;
-			ilGenImages(1, &ImageName);
-			ilBindImage(ImageName);
-			if(!ilLoadImage((char*)name.c_str()))
-			{
-				string str = "Failed to load image: " + name + "!\n";
-				gLog.OutPut(str);
-				return 0;
-			}
-			textureMem += (ilGetInteger(IL_IMAGE_WIDTH)*ilGetInteger(IL_IMAGE_HEIGHT)*4);
-			string str = "Image Loaded: " + name + "\n";
-			gLog.OutPut(str);
-	
-			return ImageName;
-		}
 
 		GLuint LoadImage(std::string name)
 		{
-			ILuint ImageName;
-			if((ImageName=ImagePrivate::DevilLoadImage(name))==0)
-				return 0;
-			GLuint ID = ilutGLBindTexImage();
-			ilDeleteImages(1, &ImageName);
-			return ID;
+			unsigned int width, height;
+			return LoadImage(name, width, height);
 		}
 		GLuint LoadImage(std::string name, unsigned int& width, unsigned int& height)
 		{
-			ILuint ImageName;
-			if((ImageName=ImagePrivate::DevilLoadImage(name))==0)
+			unsigned int  bpp;
+			unsigned char* data = LoadImageData(name, width, height, bpp);
+			if(!data) {
 				return 0;
-			width = ilGetInteger(IL_IMAGE_WIDTH);
-			height = ilGetInteger(IL_IMAGE_HEIGHT);
-			GLuint ID = ilutGLBindTexImage();
-			ilDeleteImages(1, &ImageName);
+			}
+
+			GLuint ID;
+			glGenTextures(1, &ID);
+			glBindTexture(GL_TEXTURE_2D, ID);
+			glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+			switch(bpp)
+			{
+			case 3:
+				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
+				break;
+			case 4:
+				glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,data);
+				break;
+			default:
+				glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
+				break;
+			}
+
+			stbi_image_free(data);
+
 			return ID;
 		}
 		GLuint LoadImage(std::string name, const int min, const int mag, const int wrapx, const int wrapy)
 		{
-			ILuint ImageName;
-			if((ImageName=ImagePrivate::DevilLoadImage(name))==0)
-				return 0;
 			unsigned int  width,height,bpp;
-			width = ilGetInteger(IL_IMAGE_WIDTH);
-			height = ilGetInteger(IL_IMAGE_HEIGHT);
-			bpp = ilGetInteger(IL_IMAGE_BPP);
-			unsigned char* data=NULL;
-			data = new unsigned char [width*height*bpp];
-			memcpy(data,ilGetData(),width*height*bpp);
-			ilDeleteImages(1, &ImageName);
+			unsigned char* data = LoadImageData(name.c_str(), width, height, bpp);
+			if(!data) {
+				return 0;
+			}
+
 			unsigned int ID=0;
 			glEnable(GL_TEXTURE_2D);
 			glGenTextures(1,&ID);
@@ -140,22 +132,26 @@ namespace UTIL_GL
 			}
 			glDisable(GL_TEXTURE_2D);
 //printf("Loadimage \"%s\" %ix%ix%i\n", name.c_str(), width, height, bpp);
-			delete[] data;
+			stbi_image_free(data);
 			return ID;
 		}
 		unsigned char*  LoadImageData(std::string name, unsigned int& width, unsigned int& height, unsigned int& bpp)
 		{
-			ILuint ImageName;
-			if((ImageName=ImagePrivate::DevilLoadImage(name))==0)
-				return NULL;
-			UTIL_GL::TextureFilter(GL_NEAREST,GL_NEAREST);
-			width = ilGetInteger(IL_IMAGE_WIDTH);
-			height = ilGetInteger(IL_IMAGE_HEIGHT);
-			bpp = ilGetInteger(IL_IMAGE_BPP);
-			unsigned char* data=NULL;
-			data = new unsigned char [width*height*bpp];
-			memcpy(data,ilGetData(),width*height*bpp);
-			ilDeleteImages(1, &ImageName);
+			int x,y,n;
+			unsigned char* data = stbi_load(name.c_str(), &x, &y, &n, 0);
+			if(!data) {
+				string str = "Failed to load image: " + name + "!\n";
+				gLog.OutPut(str);
+				return 0;
+			}
+			textureMem += (x*y*4);
+			string str = "Image Loaded: " + name + "\n";
+			gLog.OutPut(str);
+
+			width = x;
+			height = y;
+			bpp = n;
+
 			return data;
 		}
 	}
@@ -198,3 +194,15 @@ namespace UTIL_GL
 	}
 #endif
 }
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_NO_JPEG
+//#define STBI_NO_PNG
+#define STBI_NO_BMP
+//#define STBI_NO_PSD
+#define STBI_NO_TGA
+#define STBI_NO_GIF
+#define STBI_NO_HDR
+#define STBI_NO_PIC
+#define STBI_NO_PNM
+#include "stb_image.h"
