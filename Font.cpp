@@ -112,11 +112,7 @@ void Font::GenerateOffsets(unsigned char* data, int w, int h)
 				bool foundpixel = false;
 				for(y=0;y<height;y++)
 				{
-#ifdef AMIGAOS4
-					if(data[4*((ox+x)+((oy+y)*w))+0]>0)
-#else
 					if(data[4*((ox+x)+((oy+y)*w))+3]>0)
-#endif
 					{
 						foundpixel = true;
 						break;
