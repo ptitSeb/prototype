@@ -146,10 +146,10 @@ template <class T> inline void littleBigEndian (T *x) {
     unsigned char *toConvert = reinterpret_cast<unsigned char *>(x);
 	unsigned char tmp;
 	const int sz = sizeof(T);
-    for (size_t i = 0; i < (sz/2+1); ++i) {
+    for (size_t i = 0; i < sz/2; ++i) {
 	  tmp = toConvert[i];
       toConvert[i] = toConvert[sz - i - 1];
-	  toConvert[sizeof(T) - i - 1] = tmp;
+	  toConvert[sz - i - 1] = tmp;
 	}
   }
 #endif
