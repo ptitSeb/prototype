@@ -1010,7 +1010,7 @@ bool Engine::LoadConstantData()
 		return false;
 	if(!(imgSplashBack=UTIL_GL::Image::LoadImage("Data/Gfx/SplashBack.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
-	if(!(imgStage1=UTIL_GL::Image::LoadImage("Data/Gfx/Stage1.psd",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
+	if(!(imgStage1=UTIL_GL::Image::LoadImage("Data/Gfx/Stage1.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
 	if(!(imgGameOver=UTIL_GL::Image::LoadImage("Data/Gfx/GameOver.psd",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
