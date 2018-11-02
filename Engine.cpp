@@ -287,6 +287,12 @@ PROFILE_START_SLICE("ENGINE_Pump");
 							break;
 						CheckJoystickMotion(event);
 						break;
+					//joystick hat (it the crosspad on a Xbox360 joystick)
+					case SDL_JOYHATMOTION:
+						if(!bJoystickSupported)
+							break;
+						CheckJoystickHat(event);
+						break;
 
 					case SDL_QUIT:
 					bQuit = true;
@@ -472,6 +478,18 @@ void Engine::CheckJoystickMotion(SDL_Event event)
 	}
 //	gLog.OutPut("CheckJoystick END\n");
 }
+
+void Engine::CheckJoystickHat(SDL_Event event)
+{
+//	gLog.OutPut("CheckJoystickHat START\n");
+	Uint8 hat = event.jhat.hat;
+	KeyStateAlltered(JOYSTICK_LEFT, hat & SDL_HAT_LEFT);
+	KeyStateAlltered(JOYSTICK_RIGHT, hat & SDL_HAT_RIGHT);
+	KeyStateAlltered(JOYSTICK_UP, hat & SDL_HAT_UP);
+	KeyStateAlltered(JOYSTICK_DOWN, hat & SDL_HAT_DOWN);
+//	gLog.OutPut("CheckJoystickHat END\n");
+}
+
 //================================================================================================//
 						/*************************
 						** Keystate has changed **	
