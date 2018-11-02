@@ -800,13 +800,13 @@ void Engine::InitializeRenderTargets()
 //================================================================================================//
 bool Engine::LoadConstantData()
 {
-	if(!mFont1.LoadFont("Data/Gfx/Fonts.psd","Data/Gfx/FontShadow.psd"))
+	if(!mFont1.LoadFont("Data/Gfx/Fonts.png","Data/Gfx/FontShadow.png"))
 		return false;
-	if(!mFont2.LoadFont("Data/Gfx/Fonts2.psd","Data/Gfx/Fonts2Shadow.psd"))
+	if(!mFont2.LoadFont("Data/Gfx/Fonts2.png","Data/Gfx/Fonts2Shadow.png"))
 		return false;
-	if(!(imgUI=UTIL_GL::Image::LoadImage("Data/Gfx/GUI.psd",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
+	if(!(imgUI=UTIL_GL::Image::LoadImage("Data/Gfx/GUI.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
-	if(!(imgScanlines=UTIL_GL::Image::LoadImage("Data/Gfx/Scanlines.psd",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
+	if(!(imgScanlines=UTIL_GL::Image::LoadImage("Data/Gfx/Scanlines.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
 	if(!(imgHudBeam=UTIL_GL::Image::LoadImage("Data/Gfx/HudBeam.png",GL_NEAREST,GL_NEAREST,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
 		return false;
@@ -877,7 +877,7 @@ bool Engine::LoadConstantData()
 	sprThruster.Split(ID,256,128,64,64);
 	if(!(imgBoss=UTIL_GL::Image::LoadImage("Data/Gfx/Boss.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
 		return false;
-	if(!(imgBossTube=UTIL_GL::Image::LoadImage("Data/Gfx/BossTube.psd",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
+	if(!(imgBossTube=UTIL_GL::Image::LoadImage("Data/Gfx/BossTube.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
 		return false;
 	if(!(imgBossTubeSpec=UTIL_GL::Image::LoadImage("Data/Gfx/BossTubeSpec.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
 		return false;
@@ -912,7 +912,7 @@ bool Engine::LoadConstantData()
 	if(!(ID=UTIL_GL::Image::LoadImage("Data/Gfx/BossSperm.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
 		return false;
 	sprBossSperm.Split(ID,128,64,32,32);
-//	if(!(ID=UTIL_GL::Image::LoadImage("Data/Gfx/SolarFlare.psd",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
+//	if(!(ID=UTIL_GL::Image::LoadImage("Data/Gfx/SolarFlare.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
 //		return false;
 //	sprSolarFlare.Split(ID,128,128,64,64);
 	if(!(ID=UTIL_GL::Image::LoadImage("Data/Gfx/FireBug.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
@@ -974,7 +974,7 @@ bool Engine::LoadConstantData()
 	sprBit.Split(ID,128,64,32,32);
 
 	//explosions
-	if(!(ID=UTIL_GL::Image::LoadImage("Data/Gfx/ExplosionSmall.psd",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
+	if(!(ID=UTIL_GL::Image::LoadImage("Data/Gfx/ExplosionSmall.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
 		return false;
 	sprExplosionSmall.Split(ID,1024,512,128,128);
 	if(!(ID=UTIL_GL::Image::LoadImage("Data/Gfx/Explosion2.png",GL_LINEAR,GL_LINEAR,GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE)))
@@ -1022,7 +1022,7 @@ bool Engine::LoadConstantData()
 	sprWaterSplash.Split(ID,64,64,32,32);
 
 	//splash related
-	if(!(imgSplash=UTIL_GL::Image::LoadImage("Data/Gfx/Splash.psd",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
+	if(!(imgSplash=UTIL_GL::Image::LoadImage("Data/Gfx/Splash.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
 	if(!(imgSplashFire=UTIL_GL::Image::LoadImage("Data/Gfx/Fire.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
@@ -1030,7 +1030,7 @@ bool Engine::LoadConstantData()
 		return false;
 	if(!(imgStage1=UTIL_GL::Image::LoadImage("Data/Gfx/Stage1.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
-	if(!(imgGameOver=UTIL_GL::Image::LoadImage("Data/Gfx/GameOver.psd",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
+	if(!(imgGameOver=UTIL_GL::Image::LoadImage("Data/Gfx/GameOver.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
 	if(!(imgProtoTypeMk1=UTIL_GL::Image::LoadImage("Data/Gfx/Prototypemk1.png",GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_REPEAT)))
 		return false;
