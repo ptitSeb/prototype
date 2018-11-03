@@ -25,7 +25,8 @@ class Sample : public Sound
 {
 public:
 	#ifdef NO_FMOD
-	Sample(){pSample = 0; pLoop = 1; name=NULL; }
+	Sample(){ pSample = 0; pLoop = 1; name=NULL; }
+	~Sample() { Discard(); }
 	#else
 	Sample(){pSample = 0;}
 	#endif
@@ -50,7 +51,8 @@ class Stream : public Sound
 {
 public:
 	#ifdef NO_FMOD
-	Stream(){pStream = 0; pLoop = 1;}
+	Stream(){ pStream = 0; pLoop = 1; }
+	~Stream() { Discard(); }
 	#else
 	Stream(){pStream = 0;}
 	#endif

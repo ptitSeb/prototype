@@ -189,6 +189,9 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 Engine::~Engine(void)
 {
 	gLog.OutPut("\n[Engine Shutdown]\n");
+	ClearMapArrays();
+	ClearMapEntities();
+	FreeConstantData();
 	#ifdef NO_FMOD
 	Mix_CloseAudio();
 	#else
@@ -1186,6 +1189,8 @@ bool Engine::LoadMapData()
 //================================================================================================//
 bool Engine::ClearMapEntities()
 {
+	for(Generator& g: mGenerators)
+		if(g.mpEntity) delete g.mpEntity;
 	mGenerators.clear();
 	mAnimGenerators.clear();
 	mBullets.clear();
@@ -1391,4 +1396,33 @@ void Engine::RenderScanLines()
 	glEnd();
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
+}
+
+void Engine::FreeConstantData()
+{
+		//sounds
+	smpLaser1.Discard();
+	smpLaser2.Discard();
+	smpLaser3.Discard();
+	smpLaser4.Discard();
+	smpLaser5.Discard();
+	smpBigLaser1.Discard();
+	smpForceShot.Discard();
+	smpForceCharge.Discard();
+	smpDeflect.Discard();
+	smpSmallExplode.Discard();
+	smpMedExplode.Discard();
+	smpLargeExplode.Discard();
+	smpLargeExplode2.Discard();
+	smpPickup.Discard();
+	smpOrbSpawn.Discard();
+	smpLaser6.Discard();
+	smpBigLaser2.Discard();
+	smpLaser7.Discard();
+
+	smpUIselect.Discard();
+	smpUImove.Discard();
+	stmStage.Discard();
+	stmBoss.Discard();
+
 }

@@ -8,6 +8,7 @@ Generator::Generator()
 	tickDelay = 0;
 	numEnts = 1;
 	bEasySpawn = false;
+	mpEntity = NULL;
 }
 Generator::~Generator()
 {

@@ -12,6 +12,7 @@ void Sound::Volume(int channel,int vol)
 bool Sample::Load(char* sound, bool loop)
 {
 //printf("Sample::Load(\"%s\", %i)\n", sound, loop);
+	Discard();
 	if(loop)
 	{
 		#ifdef NO_FMOD
@@ -82,7 +83,7 @@ void Sample::Discard()
 		#else
 		FSOUND_Sample_Free(pSample);
 		#endif
-//	pSample = 0;
+	pSample = 0;
 }
 void Sample::SetFrequency(int channel,int frequency)
 {
@@ -105,6 +106,7 @@ void Sample::SetDefaults(int  deffreq, int defvol, int defpan, int defpri, int v
 bool Stream::Load(char* stream, bool loop)
 {
 //printf("Stream::Load(\"%s\", %i)\n", stream, loop);
+	Discard();
 	if(loop)
 	{
 		#ifdef NO_FMOD

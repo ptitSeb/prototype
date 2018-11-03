@@ -129,6 +129,7 @@ private:
 	void InitFmod();
 	void InitializeRenderTargets();
 	bool LoadConstantData();
+	void FreeConstantData();
 	//void InitPhysics();
 
 	void SetState(void(Engine::*update)(float),void(Engine::*render)(const float));
