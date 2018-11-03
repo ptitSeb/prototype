@@ -3,6 +3,9 @@
 #ifndef USE_SDL2
 #define SDLK_SCANCODE_MASK 0
 #endif
+#ifndef WIN32
+#define DeleteFile remove
+#endif
 
 void Engine::StartFadeIn()
 {
@@ -455,7 +458,6 @@ void Engine::UpdateConfig(float delta)
 
 		case 13://back to main
 			//write out new cfg
-//			DeleteFile("Controls.cfg");
 
 			char controlspath[PATH_MAX];
 #ifdef AMIGAOS4
@@ -463,6 +465,7 @@ void Engine::UpdateConfig(float delta)
 #else
 			snprintf(controlspath, PATH_MAX, "%s/.prototype/Controls.cfg", getenv("HOME"));
 #endif
+			DeleteFile(controlspath);
 			gSerializer.PutComment(controlspath,"[Control Configuration]");
 			for(int n=0; n<6;n++)
 			{
