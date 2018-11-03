@@ -191,9 +191,9 @@ static char* SDLKeyStrings[] = {
 	"L CTRL",					//224
 	"L SHIFT",					//225
 	"L ALT",					//226
-	"R ALT",					//227
-	"R SHIFT",					//228
-	"R CTRL",					//229
+	"WORLD_67",					//227
+	"R CTRL",					//228
+	"R SHIFT",					//229
 #else
 	"WORLD_64",					//224
 	"WORLD_65",					//225
