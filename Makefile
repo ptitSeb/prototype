@@ -21,6 +21,8 @@ endif
 
 LD	      = g++
 
+CXXFLAGS 	 += -std=c++11
+
 CXXFLAGS     += -DNO_FMOD
 ifeq ($(SDL2),1)
 SDL_LDFLAGS   = $(shell sdl2-config --libs) 
