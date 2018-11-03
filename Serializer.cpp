@@ -197,7 +197,7 @@ bool Serializer::SearchFileGenerate(string file)
 	{
 		m_GenFiles.push_back(file);
 #ifdef PRINT_SERIAL
-		printf("Failed to find file %s Now generating...\n",file.c_str());
+		printf("file %s will be generated...\n",file.c_str());
 #endif
 		return true;
 	}
