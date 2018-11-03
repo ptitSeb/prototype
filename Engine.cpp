@@ -532,7 +532,20 @@ void Engine::KeyStateAlltered(int key,bool state)
 		if(state)
 		{
 			if(!bInGame)
-				bQuit = true;
+			{
+				if(pUpdate!=&Engine::UpdateSplash) {
+					StartFrontEnd();
+					SetState(&Engine::UpdateSplash,&Engine::RenderSplash);
+					SetStateTimed(&Engine::UpdateSplash,&Engine::RenderSplash,0);
+					mFade.StartFadeIn(mTimer.GetTime(),2,0.5f);
+					fUIDelay = mTimer.GetTime();
+					iOption = 0;
+
+					return;
+				}
+				else
+					bQuit = true;
+			}
 			else
 			{
 				bWimpMode = false;
