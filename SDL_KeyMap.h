@@ -72,7 +72,22 @@ static char* SDLKeyStrings[] = {
 	"GREATER",					//62
 	"QUESTION",					//63
 	"AT",						//64
+#ifdef USE_SDL2
+	"","","","","","","","",
+	"INSERT",					//73
+	"HOME",						//74
+	"PAGE UP",					//75
+	"DELETE",					//76
+	"END",						//77
+	"PAGE DOWN",				//78
+	"RIGHT",					//79
+	"LEFT",						//80
+	"DOWN",						//81
+	"UP",						//82
+	"",	"","","","","","","",
+#else
 	"","","","","","","","","","","","","","","","","","","","","","","","","","",
+#endif
 	"LEFTBRACKET",				//91
 	"BACKSLASH",				//92
 	"RIGHTBRACKET",				//93
@@ -172,12 +187,21 @@ static char* SDLKeyStrings[] = {
 	"WORLD_61",					//221
 	"WORLD_62",					//222
 	"WORLD_63",					//223
+#ifdef USE_SDL2
+	"L CTRL",					//224
+	"L SHIFT",					//225
+	"L ALT",					//226
+	"R ALT",					//227
+	"R SHIFT",					//228
+	"R CTRL",					//229
+#else
 	"WORLD_64",					//224
 	"WORLD_65",					//225
 	"WORLD_66",					//226
 	"WORLD_67",					//227
 	"WORLD_68",					//228
 	"WORLD_69",					//229
+#endif
 	"WORLD_70",					//230
 	"WORLD_71",					//231
 	"WORLD_72",					//232

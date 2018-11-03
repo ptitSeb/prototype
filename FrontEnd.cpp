@@ -1,4 +1,9 @@
 #include "Engine.h"
+
+#ifndef USE_SDL2
+#define SDLK_SCANCODE_MASK 0
+#endif
+
 void Engine::StartFadeIn()
 {
 //	gLog.OutPut("StartFadeIn Called\n");
@@ -583,10 +588,10 @@ void Engine::RenderConfig(const float interp)
 		mFont1.Print(mKeys[n].KeyName,110,168 + (40*(float)n));
 		iOption==n?
 			(bConfigureKey? mFont1.SetColor(0,1,1,1): mFont1.SetColor(1,1,0,1)): mFont1.SetColor(1,1,1,1);
-		mFont1.Print(SDLKeyStrings[mKeys[n].PrimaryKey],280,168 + (40*(float)n));
+		mFont1.Print(SDLKeyStrings[mKeys[n].PrimaryKey & ~SDLK_SCANCODE_MASK],280,168 + (40*(float)n));
 		iOption==(n+6)?
 			(bConfigureKey? mFont1.SetColor(0,1,1,1): mFont1.SetColor(1,1,0,1)): mFont1.SetColor(1,1,1,1);
-		mFont1.Print(SDLKeyStrings[mKeys[n].SecondaryKey],420,168 + (40*(float)n));
+		mFont1.Print(SDLKeyStrings[mKeys[n].SecondaryKey & ~SDLK_SCANCODE_MASK],420,168 + (40*(float)n));
 	}
 
 	mFont1.SetAlignment(ALIGN_CENTER);
