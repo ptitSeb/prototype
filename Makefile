@@ -8,8 +8,6 @@ CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings
 LDFLAGS       = -lGL -lm
 DEST          = /usr/local
 else ifeq ($(AMIGAOS4),1)
-CPP			  = ppc-amigaos-gcc
-LD			  = ppc-amigaos-gcc -static
 CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings -DAMIGAOS4
 LDFLAGS       = -lSDL_image -lwebp -lpng12 -ltiff -ljpeg_8b -lmikmod -lmodplug -lvorbisfile -lvorbis -logg -lflac libgl4es.a -lstdc++ -lz
 DEST          = /usr/local
@@ -19,22 +17,30 @@ LDFLAGS       = -lGL -lm
 DEST	      = .
 endif
 
-LD	      = g++
 
+ifeq ($(AMIGAOS4),1)
+# no c++11 on amiga?!
+CPP			  = ppc-amigaos-gcc
+LD			  = gcc -static
+else
+LD	      	  = g++
 CXXFLAGS 	 += -std=c++11
+endif
 
 ifeq ($(SDL2),1)
-SDL_LDFLAGS   = $(shell sdl2-config --libs) 
-SDL_CFLAGS    = $(shell sdl2-config --cflags)
 CXXFLAGS     += -DUSE_SDL2
 ifeq ($(AMIGAOS4),1)
 LDFLAGS		 +=  -lSDL2_image libSDL2.a -lpthread -lsmpeg2
+else
+SDL_LDFLAGS   = $(shell sdl2-config --libs) 
+SDL_CFLAGS    = $(shell sdl2-config --cflags)
 endif
+else
+ifeq ($(AMIGAOS4),1)
+LDFLAGS      += -lSDL_image libSDL.a -lsmpeg
 else
 SDL_LDFLAGS   = $(shell sdl-config --libs) 
 SDL_CFLAGS    = $(shell sdl-config --cflags)
-ifeq ($(AMIGAOS4),1)
-LDFLAGS      += -lSDL_image libSDL.a -lsmpeg
 endif
 endif
 
