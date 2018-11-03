@@ -6,12 +6,9 @@ DEST          = /usr/local
 else ifeq ($(LINUX),1)
 CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings
 LDFLAGS       = -lGL -lm
-MORELIBS	  =
 DEST          = /usr/local
 else ifeq ($(AMIGAOS4),1)
 CXXFLAGS      = -O2 -g -I./ -Wno-write-strings -DAMIGAOS4
-LDFLAGS       = -lSDL_image -lwebp -lpng12 -ltiff -ljpeg_8b -lmikmod -lmodplug -lvorbisfile -lvorbis -logg -lflac
-MORELIBS	  = libgl4es.a -lstdc++ -lz
 DEST          = /usr/local
 else
 CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fsingle-precision-constant -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings -DPANDORA -DUSE_C4A
@@ -29,23 +26,21 @@ LD	      	  = g++
 CXXFLAGS 	 += -std=c++11
 endif
 
-ifeq ($(SDL2),1)
-CXXFLAGS     += -DUSE_SDL2
 ifeq ($(AMIGAOS4),1)
-LDFLAGS		 +=  -lSDL2_image -lpthread -lsmpeg2 libSDL2.a 
+ifeq ($(SDL2),1)
+LDFLAGS		 += -lSDL2_image -lwebp -lpng12 -ltiff -ljpeg_8b -lSDL2_mixer -lmikmod -lmodplug -lvorbisfile -lvorbis -logg -lflac -lsmpeg2 libSDL2.a libgl4es.a -lpthread -lstdc++ -lz
 else
-SDL_LDFLAGS   = $(shell sdl2-config --libs) 
-SDL_CFLAGS    = $(shell sdl2-config --cflags)
+LDFLAGS      += -lSDL_image -lwebp -lpng12 -ltiff -ljpeg_8b -lSDL_mixer -lmikmod -lmodplug -lvorbisfile -lvorbis -logg -lflac -lsmpeg2 libSDL.a libgl4es.a -lstdc++ -lz
 endif
 else
-ifeq ($(AMIGAOS4),1)
-LDFLAGS      += -lSDL_image -lsmpeg libSDL.a 
+ifeq ($(SDL2),1)
+CXXFLAGS     += -DUSE_SDL2
+SDL_LDFLAGS   = $(shell sdl2-config --libs) 
+SDL_CFLAGS    = $(shell sdl2-config --cflags)
 else
 SDL_LDFLAGS   = $(shell sdl-config --libs) 
 SDL_CFLAGS    = $(shell sdl-config --cflags)
 endif
-endif
-
 ifeq ($(FMOD),1)
 LDFLAGS      += -lfmod
 else
@@ -56,7 +51,7 @@ else
 LDFLAGS      += -lSDL_mixer 
 endif
 endif
-
+endif
 
 MAKEFILE      = Makefile
 
@@ -77,5 +72,5 @@ clean:
 
 $(PROGRAM):     $(OBJS) $(LIBS)
 		@echo "Linking $(PROGRAM) ..."
-		$(LD) -o $(PROGRAM) $(OBJS) $(LDFLAGS) $(SDL_LDFLAGS) $(MORELIBS)
+		$(LD) -o $(PROGRAM) $(OBJS) $(LDFLAGS) $(SDL_LDFLAGS)
 
