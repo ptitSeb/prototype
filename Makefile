@@ -23,25 +23,32 @@ LD	      = g++
 
 CXXFLAGS 	 += -std=c++11
 
-CXXFLAGS     += -DNO_FMOD
 ifeq ($(SDL2),1)
 SDL_LDFLAGS   = $(shell sdl2-config --libs) 
 SDL_CFLAGS    = $(shell sdl2-config --cflags)
 CXXFLAGS     += -DUSE_SDL2
 ifeq ($(AMIGAOS4),1)
-LDFLAGS		 +=  -lSDL2_mixer -lSDL2_image libSDL2.a -lpthread -lsmpeg2
-else
-LDFLAGS      += -lSDL2_mixer 
+LDFLAGS		 +=  -lSDL2_image libSDL2.a -lpthread -lsmpeg2
 endif
 else
-ifeq ($(AMIGAOS4),1)
-LDFLAGS      += -lSDL_mixer -lSDL_image libSDL.a -lsmpeg
-else
-LDFLAGS      += -lSDL_mixer
-endif
 SDL_LDFLAGS   = $(shell sdl-config --libs) 
 SDL_CFLAGS    = $(shell sdl-config --cflags)
+ifeq ($(AMIGAOS4),1)
+LDFLAGS      += -lSDL_image libSDL.a -lsmpeg
 endif
+endif
+
+ifeq ($(FMOD),1)
+LDFLAGS      += -lfmod
+else
+CXXFLAGS     += -DNO_FMOD
+ifeq ($(SDL2),1)
+LDFLAGS      += -lSDL2_mixer 
+else
+LDFLAGS      += -lSDL_mixer 
+endif
+endif
+
 
 MAKEFILE      = Makefile
 
