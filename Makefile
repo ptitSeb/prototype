@@ -8,7 +8,11 @@ CXXFLAGS      = -O2 -g -I./ -I/usr/include/GL -Wno-write-strings
 LDFLAGS       = -lGL -lm
 DEST          = /usr/local
 else ifeq ($(AMIGAOS4),1)
-CXXFLAGS      = -O2 -g -I./ -Wno-write-strings -DAMIGAOS4
+ifeq ($(SDL2),1)
+CXXFLAGS      = -O2 -g -I./ -Wno-write-strings -DUSE_SDL2 -DNO_FMOD -DAMIGAOS4
+else
+CXXFLAGS      = -O2 -g -I./ -Wno-write-strings -DNO_FMOD -DAMIGAOS4
+endif
 DEST          = /usr/local
 else
 CXXFLAGS      = -O3 -fsigned-char -fdiagnostics-color=auto -mcpu=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fsingle-precision-constant -g -ffast-math -I/mnt/utmp/codeblocks/usr/include/ -I./ -I/mnt/utmp/codeblocks/usr/include/GL -Wno-write-strings -DPANDORA -DUSE_C4A
