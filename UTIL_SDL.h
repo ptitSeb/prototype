@@ -26,6 +26,7 @@ namespace UTIL_SDL
 
 	bool InitSDL(char* winName, int width, int height, int bpp, bool vsync, bool fscreen);
 	bool InitJoystick();
+	bool QuitSDL();
 //================================================================================================//
 									/*********************
 									 ** pbuffer related **

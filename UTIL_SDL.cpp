@@ -145,4 +145,18 @@ namespace UTIL_SDL
 			return true;
 		return false;
 	}
+
+	bool QuitSDL()
+	{
+#ifdef USE_SDL2
+		if(glContext)
+			SDL_GL_DeleteContext(glContext);
+		glContext = NULL;
+		if(glWindow)
+			SDL_DestroyWindow(glWindow);
+		glWindow = NULL;
+#endif
+		SDL_Quit();
+		return true;
+	}
 }

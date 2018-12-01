@@ -197,7 +197,7 @@ Engine::~Engine(void)
 	#else
 	FSOUND_Close();  
 	#endif
-	SDL_Quit();
+	UTIL_SDL::QuitSDL();
 	SaveScores();
 	gLog.OutPut("Complete...\n\n");
 }
