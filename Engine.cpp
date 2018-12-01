@@ -1202,15 +1202,8 @@ bool Engine::LoadMapData()
 //================================================================================================//
 bool Engine::ClearMapEntities()
 {
-#ifdef AMIGAOS4
-// avoid c++11
-	list<Generator>::iterator g;
-	for(g = mGenerators.begin(); g != mGenerators.end(); g++)
-		if((*g).mpEntity) delete (*g).mpEntity;
-#else
 	for(Generator& g: mGenerators)
 		if(g.mpEntity) delete g.mpEntity;
-#endif
 	mGenerators.clear();
 	mAnimGenerators.clear();
 	mBullets.clear();
