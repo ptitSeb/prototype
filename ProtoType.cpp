@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include <sys/stat.h>
 
+#ifdef AMIGAOS4
+static const char* __attribute__((used)) stackcookie = "$STACK: 1000000";
+#endif
+
 int main(int argc, char* argv[])
 {
 	char cfg_path[PATH_MAX];
