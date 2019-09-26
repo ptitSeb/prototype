@@ -1,4 +1,7 @@
 #include "Engine.h"
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 //#define PROFILE_TIME 100//set your profile time here (if you want to profile for specific set length)
 //================================================================================================//
 						/***********************
@@ -29,8 +32,21 @@ glGenerateMipmap_func pglGenerateMipmap = NULL;
 
 
 Engine *gpEngine;
+#ifdef __EMSCRIPTEN__
+void em_main_loop()
+{
+	if(gpEngine)
+		gpEngine->Pump();
+}
+
+extern "C"
+void initialize_gl4es();
+#endif
 Engine::Engine(int width, int height, bool fscreen, char* winName)
 {
+#ifdef __EMSCRIPTEN__
+	initialize_gl4es();
+#endif
 	gpEngine = this;
 	pRecordEnt = NULL;
 	//registering profiler funcs
@@ -176,7 +192,11 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	SetState(&Engine::UpdateIntro,&Engine::RenderIntro);
 
 	//start rolling
+#ifdef __EMSCRIPTEN__
+	emscripten_set_main_loop(em_main_loop, 0, 1);
+#else
 	Pump();
+#endif
 
 	//output a profiler log
 	PROFILE_LOG_FINAL_STATS;
@@ -231,7 +251,9 @@ void Engine::Pump()
 	int tick=0,oldtick=0;
 	float accumulator=0;
 	SDL_Event event;
+#ifndef __EMSCRIPTEN__
 	while(!bQuit)
+#endif
 	{
 	//gLog.OutPut("CorePump START\n");
 

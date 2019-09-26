@@ -1,2 +1,4 @@
 prototype
 *.o
+*.bc
+

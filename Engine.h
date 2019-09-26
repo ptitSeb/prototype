@@ -142,8 +142,9 @@ private:
 	void SetStateTimed(void(Engine::*update)(float),void(Engine::*render)(const float),float duration, void(Engine::*pCallMe)(void));
 	float mfStateTime;//the time at which a request was called
 	bool mbTimedState;
-
+#ifndef __EMSCRIPTEN__
 	void Pump();//main loop of engine
+#endif
 
 
 	// KEY RELATED VARIABLES AND FUNCTIONS
@@ -249,6 +250,9 @@ public:
 
 	Engine(int width, int height, bool fscreen, char* winName);
 	~Engine(void);
+#ifdef __EMSCRIPTEN__
+	void Pump();//main loop of engine
+#endif
 	//components
 	Timer	mTimer;
 	Font	mFont1,mFont2;
