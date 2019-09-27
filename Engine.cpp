@@ -70,6 +70,8 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	char enginepath[PATH_MAX];
 #ifdef AMIGAOS4
 	snprintf(enginepath, PATH_MAX, "%s.prototype/Engine.cfg", "PROGDIR:");
+#elif defined(__EMSCRIPTEN__)
+	snprintf(enginepath, PATH_MAX, "%s/Engine.cfg", "prototype_data");
 #else
 	snprintf(enginepath, PATH_MAX, "%s/.prototype/Engine.cfg", getenv("HOME"));
 #endif
@@ -88,6 +90,13 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	gSerializer.PutComment(enginepath,"[Engine Properties]");
 	gSerializer.ReadVariable(enginepath,"Keeplog",log);
 	gSerializer.ReadVariable(enginepath,"Joystick",joystick);
+#ifdef __EMSCRIPTEN__
+	EM_ASM(
+		FS.syncfs(false,function () {
+			Module.print("File sych'd")
+		});
+	);
+#endif
 	FPS?bShowFps = true: bShowFps= false;
 	scanlines?bScanlines=true:bScanlines=false;
 	#if defined(PANDORA)
@@ -193,7 +202,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 
 	//start rolling
 #ifdef __EMSCRIPTEN__
-	emscripten_set_main_loop(em_main_loop, 0, 1);
+	emscripten_set_main_loop(em_main_loop, 60, 1);
 #else
 	Pump();
 #endif
@@ -425,6 +434,8 @@ void Engine::InitializeKeys()
 	char controlspath[PATH_MAX];
 #ifdef AMIGAOS4
 	snprintf(controlspath, PATH_MAX, "%s.prototype/Controls.cfg", "PROGDIR:");
+#elif defined(__EMSCRIPTEN__)
+	snprintf(controlspath, PATH_MAX, "%s/Controls.cfg", "prototype_data");
 #else
 	snprintf(controlspath, PATH_MAX, "%s/.prototype/Controls.cfg", getenv("HOME"));
 #endif
@@ -438,6 +449,13 @@ void Engine::InitializeKeys()
 		sprintf(sz,"%s_Secondary",mKeys[n].KeyName);
 		gSerializer.ReadVariable(controlspath,sz,mKeys[n].SecondaryKey);
 	}
+#ifdef __EMSCRIPTEN__
+	EM_ASM(
+		FS.syncfs(false,function () {
+			Module.print("File sych'd")
+		});
+	);
+#endif
 }
 //================================================================================================//
 						/********************
@@ -1347,6 +1365,8 @@ void Engine::LoadScores()
 	char scorepath[PATH_MAX];
 #ifdef AMIGAOS4
 	snprintf(scorepath, PATH_MAX, "%s.prototype/score.dat", "PROGDIR:");
+#elif defined(__EMSCRIPTEN__)
+	snprintf(scorepath, PATH_MAX, "%s/score.dat", "prototype_data");
 #else
 	snprintf(scorepath, PATH_MAX, "%s/.prototype/score.dat", getenv("HOME"));
 #endif
@@ -1371,6 +1391,13 @@ void Engine::LoadScores()
 	gSerializer.ReadVariable(scorepath,"9b",s9);
 	gSerializer.ReadVariable(scorepath,"10a",iHiScore[9]);
 	gSerializer.ReadVariable(scorepath,"10b",s10);
+#ifdef __EMSCRIPTEN__
+	EM_ASM(
+		FS.syncfs(false,function () {
+			Module.print("File sych'd")
+		});
+	);
+#endif
 	strcpy(szHiScore[0],s1.c_str());
 	strcpy(szHiScore[1],s2.c_str());
 	strcpy(szHiScore[2],s3.c_str());
@@ -1387,6 +1414,8 @@ void Engine::SaveScores()
 	char scorepath[PATH_MAX];
 #ifdef AMIGAOS4
 	snprintf(scorepath, PATH_MAX, "%s.prototype/score.dat", "PROGDIR:");
+#elif defined(__EMSCRIPTEN__)
+	snprintf(scorepath, PATH_MAX, "%s/score.dat", "prototype_data");
 #else
 	snprintf(scorepath, PATH_MAX, "%s/.prototype/score.dat", getenv("HOME"));
 #endif
@@ -1412,6 +1441,13 @@ void Engine::SaveScores()
 	gSerializer.ReadVariable(scorepath,"9b",iHiScore[8]);
 	gSerializer.ReadVariable(scorepath,"10a",iHiScore[9]);
 	gSerializer.ReadVariable(scorepath,"10b",iHiScore[9]);
+#ifdef __EMSCRIPTEN__
+	EM_ASM(
+		FS.syncfs(false,function () {
+			Module.print("File sych'd")
+		});
+	);
+#endif
 }
 
 void Engine::RenderScanLines()
