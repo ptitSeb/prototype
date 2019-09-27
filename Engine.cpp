@@ -31,13 +31,13 @@ glGetFramebufferAttachmentParameteriv_func pglGetFramebufferAttachmentParameteri
 glGenerateMipmap_func pglGenerateMipmap = NULL;
 
 
-Engine *gpEngine;
+Engine *gpEngine = NULL;
 #ifdef __EMSCRIPTEN__
 uint32_t em_uiCurTime;
 void em_main_loop()
 {
 	uint32_t uiCurTime = SDL_GetTicks();
-	if(uiCurTime*0.001f-em_uiCurTime*0.001f<0.005f) //200fps max...
+	if(uiCurTime*0.001f-em_uiCurTime*0.001f<1.f/60.f) //60fps max...
 		return;
 	em_uiCurTime = uiCurTime;
 	if(gpEngine)
@@ -264,7 +264,7 @@ void Engine::Pump()
 {
 	char FPS[16];
 	int tick=0,oldtick=0;
-	float accumulator=0;
+	float accumulator=0.f;
 	SDL_Event event;
 #ifndef __EMSCRIPTEN__
 	while(!bQuit)
@@ -285,7 +285,7 @@ PROFILE_START_SLICE("ENGINE_Pump");
 		accumulator+=mTimer.GetDelta();
 		while(accumulator>=(bHyperMode? 0.01f:TIME_STEP))
 		{
-			while(SDL_PollEvent(&event)>0)
+			while(SDL_PollEvent(&event))
 			{
 
 				switch(event.type)
