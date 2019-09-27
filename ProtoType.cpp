@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 	snprintf(cfg_path, PATH_MAX, "%s/.prototype/", getenv("HOME"));
 #endif
 #ifdef __EMSCRIPTEN__
-	emscripten_set_main_loop(em_wait_loop, 60, 1);
+	emscripten_set_main_loop(em_wait_loop, 0, 1);
 #else
 	mkdir(cfg_path, 0755);
 	Engine engine(640,480,false,"PROTOTYPE");

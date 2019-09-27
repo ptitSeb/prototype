@@ -33,8 +33,13 @@ glGenerateMipmap_func pglGenerateMipmap = NULL;
 
 Engine *gpEngine;
 #ifdef __EMSCRIPTEN__
+uint32_t em_uiCurTime;
 void em_main_loop()
 {
+	uint32_t uiCurTime = SDL_GetTicks();
+	if(uiCurTime*0.001f-em_uiCurTime*0.001f<0.001f)
+		return;
+	em_uiCurTime = uiCurTime;
 	if(gpEngine)
 		gpEngine->Pump();
 }
@@ -202,7 +207,8 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 
 	//start rolling
 #ifdef __EMSCRIPTEN__
-	emscripten_set_main_loop(em_main_loop, 60, 1);
+	em_uiCurTime = SDL_GetTicks();
+	emscripten_set_main_loop(em_main_loop, 0, 1);
 #else
 	Pump();
 #endif
