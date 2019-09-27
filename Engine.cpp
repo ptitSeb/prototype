@@ -37,7 +37,7 @@ uint32_t em_uiCurTime;
 void em_main_loop()
 {
 	uint32_t uiCurTime = SDL_GetTicks();
-	if(uiCurTime*0.001f-em_uiCurTime*0.001f<1.f/60.f) //60fps max...
+	if(uiCurTime*0.001f-em_uiCurTime*0.001f<1.f/100.f) //100fps max...
 		return;
 	em_uiCurTime = uiCurTime;
 	if(gpEngine)
