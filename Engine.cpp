@@ -33,13 +33,13 @@ glGenerateMipmap_func pglGenerateMipmap = NULL;
 
 Engine *gpEngine = NULL;
 #ifdef __EMSCRIPTEN__
-uint32_t em_uiCurTime;
+double em_dCurTime;
 void em_main_loop()
 {
-	/*uint32_t uiCurTime = SDL_GetTicks();
-	if(uiCurTime*0.001f-em_uiCurTime*0.001f<1.f/100.f) //100fps max...
+	double dCurTime = emscripten_get_now();
+	if((dCurTime-em_dCurTime)<10.) //100fps max... (so 10ms per frame)
 		return;
-	em_uiCurTime = uiCurTime;*/
+	em_dCurTime = dCurTime;
 	if(gpEngine)
 		gpEngine->Pump();
 }
@@ -207,7 +207,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 
 	//start rolling
 #ifdef __EMSCRIPTEN__
-	em_uiCurTime = SDL_GetTicks();
+	em_dCurTime = emscripten_get_now();
 	emscripten_set_main_loop(em_main_loop, 0, 1);
 #else
 	Pump();
