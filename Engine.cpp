@@ -37,7 +37,7 @@ double em_dCurTime;
 void em_main_loop()
 {
 	double dCurTime = emscripten_get_now();
-	if((dCurTime-em_dCurTime)<10.) //100fps max... (so 10ms per frame)
+	if((dCurTime-em_dCurTime)<1000./50.) //50fps max...
 		return;
 	em_dCurTime = dCurTime;
 	if(gpEngine)
