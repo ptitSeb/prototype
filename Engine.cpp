@@ -64,7 +64,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 	winWidth = width;
 	winHeight = height;
 	int vsync=0, bpp=32, log=1, joystick=1;
-	#ifdef PANDORA
+	#if defined(PANDORA) || defined(PYRA)
 	int fullscreen=1;
 	#else
 	int fullscreen = fscreen?1:0;
@@ -104,7 +104,7 @@ Engine::Engine(int width, int height, bool fscreen, char* winName)
 #endif
 	FPS?bShowFps = true: bShowFps= false;
 	scanlines?bScanlines=true:bScanlines=false;
-	#if defined(PANDORA)
+	#if defined(PANDORA) || defined(PYRA)
 	bRenderTargetSupport=true;
 	#else
 	renderTargets? bRenderTargetSupport=true:bRenderTargetSupport=false;
@@ -428,7 +428,7 @@ void Engine::InitializeKeys()
 		mKeys[1].SecondaryKey = SDLK_s;
 		mKeys[2].SecondaryKey = SDLK_d;
 		mKeys[3].SecondaryKey = SDLK_a;
-		#ifdef PANDORA
+		#if defined(PANDORA) || defined(PYRA)
 		mKeys[4].SecondaryKey = SDLK_PAGEDOWN;
 		mKeys[5].SecondaryKey = SDLK_END;
 		#else

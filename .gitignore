@@ -1,4 +1,5 @@
 prototype
 *.o
 *.bc
-
+.gdb_history
+.vscode
