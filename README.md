@@ -1,10 +1,7 @@
 # prototype
-===========
-
-![prototype build status](https://api.travis-ci.org/ptitSeb/prototype.png "prototype build status")
 
 This is ProtoType, an RType remake from Dark Castle Software.
-This version compile on OpenPandora, Linux, ODROID and AmigaOS4, has the FMOD dependancy removed (using SDL_mixer instead, but can be re-activated), and has a few fixes in the code.
+This version compiles on OpenPandora, Linux, ODROID and AmigaOS4, has the FMOD dependancy removed (using SDL_mixer instead, but can be re-activated), and has a few fixes in the code.
 This game now use stb_image for Image Loading.
 
 ![sreenshot on Pandora](screenshot.png "screenshot on Pandora")
@@ -27,7 +24,7 @@ SDL2 is also supported, just add `SDL2=1` to the make command (better `make clea
 
 To use legacy FMOD, add `FMOD=1` to the make command.
 
-For more info, the website of the original game is here: http://xout.blackened-interactive.com/ProtoType/Prototype.html
+For more info, the website of the original game is here: [http://xout.blackened-interactive.com/ProtoType/Prototype.html](https://web.archive.org/web/20160507085617/http://xout.blackened-interactive.com/ProtoType/Prototype.html)
 
 For info on the Pandora version, go there: https://pyra-handheld.com/boards/threads/prototype.71887/
 
