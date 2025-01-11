@@ -30,11 +30,86 @@
       .game[width] + .loading {
         display: none;
       }
+      span {
+        --outline: #ccc;
+        font-family: sans-serif;
+        font-size: 18px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding-bottom: 3px;
+        width: 48px;
+        height: 45px;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #444;
+        border-top: 1px solid var(--outline);
+        box-shadow: 0px 3px 0px 2px var(--outline);
+        -webkit-user-select: none;
+          user-select: none;
+      }
+      section {
+        --cell-length: 56px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        place-items: center;
+        grid-gap: 1px;
+        width: calc(var(--cell-length) * 3);
+        height: calc(var(--cell-length) * 2);
+      }
+      section ~ section {
+        margin-top: 50px;
+      }
+      section > span:nth-child(1) {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      section > span:nth-child(2) {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      section#a > span:nth-child(1),
+      section > span:nth-child(3) {
+        grid-column: 2;
+        grid-row: 2;
+      }
+      section > span:nth-child(4) {
+        grid-column: 3;
+        grid-row: 2;
+      }
+      #a,
+      #b {
+        position: fixed;
+        bottom: 0;
+      }
+      #a {
+        left: 0;
+      }
+      #b {
+        right: 0;
+      }
+      @media (pointer: coarse) {
+        span {
+          display: flex;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="emscripten">
-      <canvas class="game portrait" oncontextmenu="event.preventDefault()"></canvas>
+      <canvas class="game portrait" oncontextmenu="event.preventDefault()" data-key="Enter" data-which="13"></canvas>
+      <section id="a">
+        <span data-key="KeyZ" data-which="90">z</span>
+        <span data-key="KeyX" data-which="88">x</span>
+      </section>
+      <section id="b">
+        <span data-key="ArrowUp" data-which="38">&uarr;</span>
+        <span data-key="ArrowLeft" data-which="37">&larr;</span>
+        <span data-key="ArrowDown" data-which="40">&darr;</span>
+        <span data-key="ArrowRight" data-which="39">&rarr;</span>
+      </section>
       <div class="loading">Loading...</div>
     </div>
     <script type="text/javascript">
@@ -45,7 +120,40 @@
             $game.classList.toggle('portrait');
             }
         }
+        const create_and_fire_event = function (event, type) {
+          const control_event = new Event(type, { bubbles: true });
+
+          control_event.code = event.target.dataset.key;
+          control_event.key = event.target.dataset.key;
+
+          control_event.keyCode = event.target.dataset.which;
+          control_event.which = event.target.dataset.which;
+
+          Module.canvas.dispatchEvent(control_event);
+        };
         var Module = {
+            preRun: [],
+            postRun: [
+              function () {
+                if (window.matchMedia("(pointer: coarse)").matches) {
+                  // touchscreen
+                  Array.from(document.querySelectorAll('span, canvas')).forEach(function (control) {
+                    control.addEventListener('touchstart', function (event) {
+                      event.preventDefault();
+                      create_and_fire_event(event, 'keydown');
+                    });
+                    control.addEventListener('touchend', function (event) {
+                      event.preventDefault();
+                      create_and_fire_event(event, 'keyup');
+                    });
+                    control.addEventListener('touchcancel', function (event) {
+                      event.preventDefault();
+                      create_and_fire_event(event, 'keyup');
+                    });
+                  });
+                }
+              }
+            ],
             print(text) {
             console.log(Array.prototype.slice.call(arguments).join(' '));
             },
