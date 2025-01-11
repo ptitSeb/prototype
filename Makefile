@@ -20,7 +20,7 @@ endif
 DEST          = /usr/local
 else ifeq ($(EMSCRIPTEN),1)
 CXXFLAGS= -s FULL_ES2=1 -I../gl4es/include -s USE_SDL_MIXER=2 -s USE_SDL=2
-CXXFLAGS+= -s USE_OGG=1 -s USE_VORBIS=1
+CXXFLAGS+= -s USE_OGG=1 -s USE_VORBIS=1 -lidbfs.js
 CXXFLAGS+= -std=gnu++11 -O2 -Wno-write-strings
 CXXFLAGS+= -Dlinux -DUSE_SDL2 -DNO_FMOD
 CXXFLAGS+= --emrun --preload-file Data --no-heap-copy
